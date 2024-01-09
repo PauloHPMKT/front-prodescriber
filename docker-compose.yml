@@ -1,0 +1,16 @@
+version: "3.7"
+
+services:
+  front-prodescriber:
+    build: .
+    entrypoint: sh ./.docker/entrypoint.sh
+    container_name: front-prodescriber
+    volumes:
+      - .:/home/prodescribe/front
+    working_dir: /home/prodescribe/front
+    ports:
+      - 8081:8081
+    restart: always
+    tty: true
+    environment:
+      - CHOKIDAR_USEPOLLING=true

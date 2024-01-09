@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import MainButton from "./Button/index.vue";
 import logo from "../../assets/img/logo_prodescriber.png";
 
 const callFormRegister = () => {
@@ -12,7 +13,7 @@ const callFormRegister = () => {
       <img :src="logo" alt="Logo ProDescriber" />
     </div>
     <div>
-      <button @click="callFormRegister">Criar sua conta</button>
+      <main-button @action="callFormRegister"> Crie sua conta </main-button>
     </div>
   </header>
 </template>
@@ -22,11 +23,14 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 0 50px;
+  background-color: #0d0d0d;
+  padding: 0 50px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid #131313;
 
   .logo_container {
     width: 180px;
-    padding: 20px 0;
+    padding: 30px 0;
     display: flex;
     justify-content: center;
     align-items: center;

@@ -15,6 +15,7 @@
     "@types/node": "^20.10.8",
     "@vitejs/plugin-vue": "^4.5.2",
     "@vue/tsconfig": "^0.5.1",
+    "sass": "^1.69.7",
     "typescript": "^5.2.2",
     "vite": "^5.0.8",
     "vue-tsc": "^1.8.27"

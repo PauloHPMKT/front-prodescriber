@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import MainButton from "./Button/index.vue";
+import MainButton from "../Button/index.vue";
 import logo from "../../assets/img/logo_prodescriber.png";
 
 const callFormRegister = () => {

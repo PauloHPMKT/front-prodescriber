@@ -1,0 +1,33 @@
+<script setup lang="ts">
+import MainButton from "../Button/index.vue";
+import type { BreadcrumbButtons } from "../../types/interfaces";
+
+const props = defineProps<{
+  buttons: BreadcrumbButtons[];
+}>();
+
+const emit = defineEmits(["actions"]);
+
+const actions = (prop: string) => {
+  emit("actions", prop);
+};
+</script>
+
+<template>
+  <div class="breadcrumb_buttons">
+    <main-button
+      v-for="(button, index) in props.buttons"
+      :key="index"
+      @click="actions(button.action)"
+    >
+      {{ button.label }}
+    </main-button>
+  </div>
+</template>
+
+<style scoped lang="scss">
+.breadcrumb_buttons {
+  display: flex;
+  gap: 10px;
+}
+</style>

@@ -1,10 +1,11 @@
 <script setup lang="ts">
+import { useRouter } from "vue-router";
 import MainButton from "../Button/index.vue";
 import logo from "../../assets/img/logo_prodescriber.png";
 
-const callFormRegister = () => {
-  alert("callFormRegister");
-};
+const router = useRouter();
+
+const toLogin = () => router.push("/login");
 </script>
 
 <template>
@@ -13,7 +14,7 @@ const callFormRegister = () => {
       <img :src="logo" alt="Logo ProDescriber" />
     </div>
     <div>
-      <main-button @action="callFormRegister"> Crie sua conta </main-button>
+      <main-button @action="toLogin"> Crie sua conta </main-button>
     </div>
   </header>
 </template>

@@ -3,21 +3,55 @@ import { ref } from "vue";
 import MainHeader from "../components/Header/index.vue";
 import MainButton from "../components/Button/index.vue";
 import FormDescription from "../components/Forms/FormDescription.vue";
-import Default from "../templates/default.vue";
 import LoadSpinner from "../components/Loaders/LoadSpinner.vue";
+import BreadcrumbButtons from "../components/BreadcrumbButtons/index.vue";
+import Default from "../templates/default.vue";
+
+import openAIService from "../services/openai.service";
+import type { BreadcrumbButtons as Crumber } from "../types/interfaces";
 
 const showDemo = ref(true);
 const show = ref(false);
 const loading = ref(false);
+const result = ref("");
+const breadcrumbButtons = ref([
+  {
+    label: "Gostei",
+    action: "like",
+  },
+  {
+    label: "Não gostei",
+    action: "dislike",
+  },
+  {
+    label: "Gerar outra descrição",
+    action: "generate",
+  },
+] as Crumber[]);
+
+const triggerActions = (actions: string) => {
+  console.log(actions);
+};
 
 const submitDescription = (description: string) => {
   loading.value = true;
   showDemo.value = false;
 
-  setTimeout(() => {
-    loading.value = false;
-  }, 2000);
-  console.log(description);
+  const requestData = {
+    messages: [
+      {
+        role: "user",
+        content: description,
+      },
+    ],
+  };
+
+  openAIService.createDescription(requestData).then((res) => {
+    if (res.status === 200) {
+      loading.value = false;
+      result.value = res.data.result.message.content;
+    }
+  });
 };
 </script>
 
@@ -58,19 +92,13 @@ const submitDescription = (description: string) => {
                   <strong>description.item_name</strong>
                 </p>
                 <p class="description-content">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Accusamus placeat rerum ut maxime, molestiae debitis, odio
-                  mollitia sit explicabo numquam excepturi blanditiis
-                  praesentium veritatis sunt beatae similique culpa labore a.
+                  {{ result }}
                 </p>
                 <footer class="card-description-footer">
-                  <button>Salvar</button>
-                  <button>Gerar nova</button>
-                  <button>Outro produto</button>
-                  <!-- <breadcrumb-buttons
+                  <breadcrumb-buttons
                     :buttons="breadcrumbButtons"
-                    @trigged_button="triggerActions"
-                  /> -->
+                    @actions="triggerActions"
+                  />
                 </footer>
               </article>
             </div>

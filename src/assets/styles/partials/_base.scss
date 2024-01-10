@@ -9,7 +9,6 @@
 
 body {
   font-family: "Roboto", sans-serif;
-  min-height: 100vh;
   color: #fff;
   background-color: #0d0d0d;
   transition: color 0.5s, background-color 0.5s;
@@ -26,4 +25,8 @@ ul {
 
 a {
   text-decoration: none;
+}
+
+p {
+  color: #a3a3a3;
 }

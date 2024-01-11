@@ -7,3 +7,7 @@ export interface IconParams {
   name: string;
   title?: string;
 }
+
+export interface StatusProps {
+  status_message: string;
+}

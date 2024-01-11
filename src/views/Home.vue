@@ -12,14 +12,17 @@ import StatusPopup from "../components/Popup/Status.vue";
 import openAIService from "../services/openai.service";
 import type { BreadcrumbButtons as Crumber } from "../types/interfaces";
 import { usePopup } from "../composables/usePopup";
+import { useValidation } from "../composables/useValidation";
 
 const { popupStatus } = usePopup();
+const { minLength } = useValidation();
 
 const showDemo = ref(true);
 const show = ref(false);
 const loading = ref(false);
 const isActive = ref(false);
 const isError = ref(false);
+const product = ref("");
 const result = ref("");
 const message = ref("");
 const breadcrumbButtons = ref([
@@ -43,7 +46,8 @@ const triggerActions = (actions: string) => {
       console.log("like");
       break;
     case "dislike":
-      console.log("dislike");
+      const description = localStorage.getItem("description");
+      submitDescription(String(description));
       break;
     case "generate":
       showDemo.value = !showDemo.value;
@@ -54,9 +58,17 @@ const triggerActions = (actions: string) => {
 };
 
 const submitDescription = (description: string) => {
+  const descriptionLength = minLength(description);
+  if (typeof descriptionLength === "string") {
+    message.value = descriptionLength;
+    popupStatus(isError, message.value, 2000);
+    return;
+  }
+
   loading.value = true;
   showDemo.value = false;
 
+  localStorage.setItem("description", description);
   const requestData = {
     messages: [
       {
@@ -94,6 +106,10 @@ const copyToClipboard = (result: string) => {
 
 <template>
   <div class="home_view">
+    <status-popup
+      :status_message="message"
+      :class="{ isPopupActive: isActive, hasError: isError }"
+    />
     <main-header />
     <main>
       <default>
@@ -130,13 +146,9 @@ const copyToClipboard = (result: string) => {
                   class="clipboard"
                   @click="copyToClipboard(result)"
                 />
-                <status-popup
-                  :status_message="message"
-                  :class="{ isPopupActive: isActive, hasError: isError }"
-                />
                 <p class="item">
                   O que achou dessa ideia para o item:
-                  <strong>description.item_name</strong>
+                  <strong>{{ product }}</strong>
                 </p>
                 <p style="user-select: none" class="description-content">
                   {{ result }}

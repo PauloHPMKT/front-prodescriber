@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { Icon } from "@iconify/vue";
+import { useRouter } from "vue-router";
 import Default from "../templates/default.vue";
 import MainButton from "../components/Button/index.vue";
+import DefaultIcon from "../components/Icons/defaultIcon.vue";
 import logo from "../assets/img/logo_prodescriber.png";
-import { useRouter } from "vue-router";
 
 const router = useRouter();
 const isTextVisible = ref(false);
@@ -28,9 +28,7 @@ const toHomePage = () => router.push({ name: "home" });
       @mouseover="showText"
       @mouseleave="hideText"
     >
-      <div class="icon_container">
-        <Icon icon="tabler:arrow-left" />
-      </div>
+      <default-icon :name="'tabler:arrow-left'" class="icon_container" />
       <p :class="{ hidden_text: isTextVisible }">voltar para a home</p>
     </div>
     <div class="banner_bg"></div>
@@ -98,9 +96,6 @@ const toHomePage = () => router.push({ name: "home" });
     .icon_container {
       display: flex;
       align-items: center;
-    }
-
-    svg {
       font-size: 1.5rem;
       margin-right: 10px;
     }
@@ -139,8 +134,8 @@ const toHomePage = () => router.push({ name: "home" });
     form {
       display: flex;
       flex-direction: column;
-      gap: 8px;
       color: #0d0d0d;
+      gap: 8px;
 
       .input_layer {
         background-color: #fff;

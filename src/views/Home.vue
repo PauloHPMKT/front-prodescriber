@@ -6,6 +6,7 @@ import FormDescription from "../components/Forms/FormDescription.vue";
 import LoadSpinner from "../components/Loaders/LoadSpinner.vue";
 import BreadcrumbButtons from "../components/BreadcrumbButtons/index.vue";
 import Default from "../templates/default.vue";
+import DefaultIcon from "../components/Icons/defaultIcon.vue";
 
 import openAIService from "../services/openai.service";
 import type { BreadcrumbButtons as Crumber } from "../types/interfaces";
@@ -30,7 +31,19 @@ const breadcrumbButtons = ref([
 ] as Crumber[]);
 
 const triggerActions = (actions: string) => {
-  console.log(actions);
+  switch (actions) {
+    case "like":
+      console.log("like");
+      break;
+    case "dislike":
+      console.log("dislike");
+      break;
+    case "generate":
+      showDemo.value = !showDemo.value;
+      break;
+    default:
+      break;
+  }
 };
 
 const submitDescription = (description: string) => {
@@ -87,6 +100,11 @@ const submitDescription = (description: string) => {
                 </div>
               </div>
               <article v-else class="description">
+                <default-icon
+                  :name="'tabler:copy'"
+                  :title="'Copiar descrição'"
+                  class="clipboard"
+                />
                 <p class="item">
                   O que achou dessa ideia para o item:
                   <strong>description.item_name</strong>
@@ -181,6 +199,26 @@ const submitDescription = (description: string) => {
       padding: 30px;
       border-radius: 8px;
       background: #fff;
+      position: relative;
+
+      .clipboard {
+        border-radius: 6px;
+        width: 36px;
+        height: 36px;
+        padding: 5px;
+        color: #121212;
+        font-size: 1.5rem;
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+
+        &:hover {
+          background-color: #121212;
+          color: #fff;
+        }
+      }
 
       .item,
       .description-content {

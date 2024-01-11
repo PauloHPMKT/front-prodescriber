@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import MainButton from "../Button/index.vue";
-import type { BreadcrumbButtons } from "../../types/interfaces";
+import type { Breadcrumb } from "../../types/interfaces";
 
 const props = defineProps<{
-  buttons: BreadcrumbButtons[];
+  buttons: Breadcrumb.Buttons[];
 }>();
 
 const emit = defineEmits(["actions"]);

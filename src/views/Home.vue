@@ -10,7 +10,7 @@ import DefaultIcon from "../components/Icons/defaultIcon.vue";
 import StatusPopup from "../components/Popup/Status.vue";
 
 import openAIService from "../services/openai.service";
-import type { BreadcrumbButtons as Crumber } from "../types/interfaces";
+import { Breadcrumb } from "../types/interfaces";
 import { usePopup } from "../composables/usePopup";
 import { useValidation } from "../composables/useValidation";
 
@@ -38,19 +38,20 @@ const breadcrumbButtons = ref([
     label: "Gerar outra descrição",
     action: "generate",
   },
-] as Crumber[]);
+] as Breadcrumb.Buttons[]);
 
 const triggerActions = (actions: string) => {
   switch (actions) {
-    case "like":
+    case Breadcrumb.Actions.LIKE:
       console.log("like");
       break;
-    case "dislike":
+    case Breadcrumb.Actions.DISLIKE:
       const description = localStorage.getItem("description");
       submitDescription(String(description));
       break;
-    case "generate":
+    case Breadcrumb.Actions.GENERATE:
       showDemo.value = !showDemo.value;
+      localStorage.removeItem("description");
       break;
     default:
       break;

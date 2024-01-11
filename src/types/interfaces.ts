@@ -1,6 +1,14 @@
-export interface BreadcrumbButtons {
-  label: string;
-  action: string;
+export namespace Breadcrumb {
+  export interface Buttons {
+    label: string;
+    action: string;
+  }
+
+  export enum Actions {
+    LIKE = "like",
+    DISLIKE = "dislike",
+    GENERATE = "generate",
+  }
 }
 
 export interface IconParams {

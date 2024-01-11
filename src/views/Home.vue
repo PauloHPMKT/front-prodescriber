@@ -7,14 +7,21 @@ import LoadSpinner from "../components/Loaders/LoadSpinner.vue";
 import BreadcrumbButtons from "../components/BreadcrumbButtons/index.vue";
 import Default from "../templates/default.vue";
 import DefaultIcon from "../components/Icons/defaultIcon.vue";
+import StatusPopup from "../components/Popup/Status.vue";
 
 import openAIService from "../services/openai.service";
 import type { BreadcrumbButtons as Crumber } from "../types/interfaces";
+import { usePopup } from "../composables/usePopup";
+
+const { popupStatus } = usePopup();
 
 const showDemo = ref(true);
 const show = ref(false);
 const loading = ref(false);
+const isActive = ref(false);
+const isError = ref(false);
 const result = ref("");
+const message = ref("");
 const breadcrumbButtons = ref([
   {
     label: "Gostei",
@@ -66,6 +73,23 @@ const submitDescription = (description: string) => {
     }
   });
 };
+
+const copyToClipboard = (result: string) => {
+  const textToCopy = result;
+  navigator.clipboard
+    .writeText(textToCopy)
+    .then(() => {
+      message.value = "Descrição copiada com sucesso!";
+      popupStatus(isActive, message.value, 2000);
+    })
+    .catch((error) => {
+      console.error(error);
+      if (error) {
+        message.value = "Erro ao copiar descrição!";
+        popupStatus(isError, message.value, 2000);
+      }
+    });
+};
 </script>
 
 <template>
@@ -104,12 +128,17 @@ const submitDescription = (description: string) => {
                   :name="'tabler:copy'"
                   :title="'Copiar descrição'"
                   class="clipboard"
+                  @click="copyToClipboard(result)"
+                />
+                <status-popup
+                  :status_message="message"
+                  :class="{ isPopupActive: isActive, hasError: isError }"
                 />
                 <p class="item">
                   O que achou dessa ideia para o item:
                   <strong>description.item_name</strong>
                 </p>
-                <p class="description-content">
+                <p style="user-select: none" class="description-content">
                   {{ result }}
                 </p>
                 <footer class="card-description-footer">

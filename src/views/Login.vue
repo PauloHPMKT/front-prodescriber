@@ -2,9 +2,9 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import Default from "../templates/default.vue";
-import MainButton from "../components/Button/index.vue";
 import DefaultIcon from "../components/Icons/defaultIcon.vue";
 import logo from "../assets/img/logo_prodescriber.png";
+import FormLogin from "../components/Forms/FormLogin.vue";
 
 const router = useRouter();
 const isTextVisible = ref(false);
@@ -18,6 +18,10 @@ const hideText = () => {
 };
 
 const toHomePage = () => router.push({ name: "home" });
+
+const submitLogin = (data: object) => {
+  console.log(data);
+};
 </script>
 
 <template>
@@ -39,17 +43,7 @@ const toHomePage = () => router.push({ name: "home" });
           <h3>Área de Login</h3>
         </figcaption>
       </figure>
-      <form>
-        <label for="email">Insira seu e-mail</label>
-        <div class="input_layer">
-          <input type="email" id="email" placeholder="email@example.com" />
-        </div>
-        <label for="pass">Insira sua senha</label>
-        <div class="input_layer" style="margin-bottom: 10px">
-          <input type="password" id="pass" placeholder="minha senha" />
-        </div>
-        <main-button>Acessar workspace</main-button>
-      </form>
+      <form-login @handle-login="submitLogin" />
     </div>
   </default>
 </template>
@@ -129,28 +123,6 @@ const toHomePage = () => router.push({ name: "home" });
 
     figcaption {
       margin-bottom: 30px;
-    }
-
-    form {
-      display: flex;
-      flex-direction: column;
-      color: #0d0d0d;
-      gap: 8px;
-
-      .input_layer {
-        background-color: #fff;
-        height: 40px;
-        border-radius: 6px;
-        padding: 5px 10px;
-
-        input {
-          width: 100%;
-          height: 100%;
-          border: none;
-          outline: none;
-          font-size: 1rem;
-        }
-      }
     }
   }
 }

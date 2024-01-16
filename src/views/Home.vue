@@ -15,7 +15,7 @@ import { usePopup } from "../composables/usePopup";
 import { useValidation } from "../composables/useValidation";
 
 const { popupStatus } = usePopup();
-const { minLength } = useValidation();
+const { minLength, isEmpty } = useValidation();
 
 const showDemo = ref(true);
 const show = ref(false);
@@ -60,6 +60,14 @@ const triggerActions = (actions: string) => {
 
 const submitDescription = (description: string) => {
   const descriptionLength = minLength(description);
+  const isEmptyField = isEmpty(description);
+
+  if (description === "") {
+    message.value = String(isEmptyField);
+    popupStatus(isError, message.value, 2000);
+    return;
+  }
+
   if (typeof descriptionLength === "string") {
     message.value = descriptionLength;
     popupStatus(isError, message.value, 2000);
@@ -172,8 +180,6 @@ const copyToClipboard = (result: string) => {
 <style scoped lang="scss">
 .home_view {
   margin: 0 auto;
-  height: 100vh;
-
   .banner_bg {
     width: 100%;
     height: 100%;

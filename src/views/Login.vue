@@ -5,6 +5,7 @@ import Default from "../templates/default.vue";
 import DefaultIcon from "../components/Icons/defaultIcon.vue";
 import logo from "../assets/img/logo_prodescriber.png";
 import FormLogin from "../components/Forms/FormLogin.vue";
+import { Accounts } from "../types/interfaces";
 
 const router = useRouter();
 const isTextVisible = ref(false);
@@ -19,8 +20,8 @@ const hideText = () => {
 
 const toHomePage = () => router.push({ name: "home" });
 
-const submitLogin = (data: object) => {
-  console.log(data);
+const submitLogin = (data: Accounts.Login) => {
+  console.log(data, "Dados do Login");
 };
 </script>
 

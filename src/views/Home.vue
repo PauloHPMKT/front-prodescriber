@@ -89,12 +89,20 @@ const submitDescription = (description: string) => {
     ],
   };
 
-  openAIService.createDescription(requestData).then((res) => {
-    if (res.status === 200) {
-      loading.value = false;
-      result.value = res.data.result.message.content;
-    }
-  });
+  openAIService
+    .createDescription(requestData)
+    .then((res) => {
+      if (res.status === 200) {
+        loading.value = false;
+        result.value = res.data.result.message.content;
+      }
+    })
+    .catch((error: Error) => {
+      if (error) {
+        message.value = "Erro ao gerar descrição!";
+        popupStatus(isError, message.value, 2000);
+      }
+    });
 };
 
 const copyToClipboard = (result: string) => {

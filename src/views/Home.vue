@@ -79,12 +79,13 @@ const submitDescription = (description: string) => {
   loading.value = true;
   showDemo.value = false;
 
-  localStorage.setItem("description", description);
+  const prompt = `Gere uma descrição resumida e eficiente, SEO-friendly para o produto: ${description}.`;
+
   const requestData = {
     messages: [
       {
         role: "user",
-        content: description,
+        content: prompt,
       },
     ],
   };
@@ -95,6 +96,8 @@ const submitDescription = (description: string) => {
       if (res.status === 200) {
         loading.value = false;
         result.value = res.data.result.message.content;
+        product.value = description;
+        localStorage.setItem("description", product.value);
       }
     })
     .catch((error: Error) => {

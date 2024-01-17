@@ -2,12 +2,20 @@
 import ReveallerPassword from "../Icons/ReveallerPassword.vue";
 import type { BaseInputProps } from "../../types/interfaces";
 import { computed, ref } from "vue";
+import DefaultIcon from "../Icons/defaultIcon.vue";
 
 const props = defineProps<BaseInputProps>();
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits(["update:modelValue", "action"]);
 
 const inputType = ref("password");
 const inputValue = ref("");
+
+const handleBlur = () => {
+  emit("update:modelValue", inputValue.value);
+};
+const action = () => {
+  emit("action");
+};
 
 const isPasswordVisible = computed(() => inputType.value === "text");
 const hideReveallerIcons = computed(() => {
@@ -16,10 +24,6 @@ const hideReveallerIcons = computed(() => {
 
 const togglePassword = () => {
   inputType.value = isPasswordVisible.value ? "password" : "text";
-};
-
-const handleBlur = () => {
-  emit("update:modelValue", inputValue.value);
 };
 </script>
 
@@ -39,6 +43,12 @@ const handleBlur = () => {
       @toggleRevealer="togglePassword"
       v-if="props.hidePasswordRevealler"
       :is_password="isPasswordVisible"
+    />
+    <default-icon
+      @click="action"
+      v-if="props.icon"
+      :name="'tabler:search'"
+      class="icon"
     />
   </div>
 </template>
@@ -60,6 +70,13 @@ const handleBlur = () => {
     border: none;
     outline: none;
     font-size: 1rem;
+  }
+
+  .icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
   }
 }
 </style>

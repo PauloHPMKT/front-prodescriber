@@ -6,7 +6,7 @@ export const useValidation = () => {
     return true;
   }
 
-  function isEmpty(val: string): boolean | string {
+  function required(val: string): boolean | string {
     if (val === "") {
       return "Campo de 'Produto' não pode ser vazio!";
     }
@@ -15,6 +15,6 @@ export const useValidation = () => {
 
   return {
     minLength,
-    isEmpty,
+    required,
   };
 };

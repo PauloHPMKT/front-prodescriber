@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import MainHeader from "../components/Header/index.vue";
 import MainButton from "../components/Button/index.vue";
 import FormDescription from "../components/Forms/FormDescription.vue";
@@ -13,9 +13,11 @@ import openAIService from "../services/openai.service";
 import { Breadcrumb } from "../types/interfaces";
 import { usePopup } from "../composables/usePopup";
 import { useValidation } from "../composables/useValidation";
+import { useOnMounted } from "../composables/useOnMounted";
 
 const { popupStatus } = usePopup();
-const { minLength, isEmpty } = useValidation();
+const { minLength, required } = useValidation();
+const { removeFromStorageOnLoad } = useOnMounted();
 
 const showDemo = ref(true);
 const show = ref(false);
@@ -60,7 +62,7 @@ const triggerActions = (actions: string) => {
 
 const submitDescription = (description: string) => {
   const descriptionLength = minLength(description);
-  const isEmptyField = isEmpty(description);
+  const isEmptyField = required(description);
 
   if (description === "") {
     message.value = String(isEmptyField);
@@ -111,6 +113,10 @@ const copyToClipboard = (result: string) => {
       }
     });
 };
+
+onMounted(() => {
+  removeFromStorageOnLoad("description");
+});
 </script>
 
 <template>
@@ -133,45 +139,46 @@ const copyToClipboard = (result: string) => {
             produto e impulsione suas vendas. Experimente já o ProDescriber, o
             melhor amigo do seu negócio!
           </p>
-          <div>
-            <div id="demo" v-if="showDemo">
-              <transition name="slide-fade">
-                <main-button v-if="show === false" @click="show = !show">
-                  Gerar Descrição
-                </main-button>
-                <form-description v-else @submit="submitDescription" />
-              </transition>
-            </div>
-            <div v-else>
-              <div v-if="loading" style="text-align: center">
-                <div class="loader_container">
-                  <load-spinner :loader_description="'Teste'" />
-                </div>
+          <div id="demo" v-if="showDemo">
+            <transition name="slide-fade">
+              <main-button v-if="show === false" @click="show = !show">
+                Gerar Descrição
+              </main-button>
+              <form-description v-else @submit="submitDescription" />
+            </transition>
+          </div>
+          <div v-else>
+            <div v-if="loading" style="text-align: center">
+              <div class="loader_container">
+                <load-spinner :loader_description="'Teste'" />
               </div>
-              <article v-else class="description">
-                <default-icon
-                  :name="'tabler:copy'"
-                  :title="'Copiar descrição'"
-                  class="clipboard"
-                  @click="copyToClipboard(result)"
-                />
-                <p class="item">
-                  O que achou dessa ideia para o item:
-                  <strong>{{ product }}</strong>
-                </p>
-                <p style="user-select: none" class="description-content">
-                  {{ result }}
-                </p>
-                <footer class="card-description-footer">
-                  <breadcrumb-buttons
-                    :buttons="breadcrumbButtons"
-                    @actions="triggerActions"
-                  />
-                </footer>
-              </article>
             </div>
+            <article v-else class="description">
+              <default-icon
+                :name="'tabler:copy'"
+                :title="'Copiar descrição'"
+                class="clipboard"
+                @click="copyToClipboard(result)"
+              />
+              <p class="item">
+                O que achou dessa ideia para o item:
+                <strong>{{ product }}</strong>
+              </p>
+              <p style="user-select: none" class="description-content">
+                {{ result }}
+              </p>
+              <footer class="card-description-footer">
+                <breadcrumb-buttons
+                  :buttons="breadcrumbButtons"
+                  @actions="triggerActions"
+                />
+              </footer>
+            </article>
           </div>
         </div>
+      </default>
+      <default style="background-color: #121212">
+        <h1>Pagina de Informações</h1>
       </default>
     </main>
   </div>
@@ -180,6 +187,7 @@ const copyToClipboard = (result: string) => {
 <style scoped lang="scss">
 .home_view {
   margin: 0 auto;
+  position: relative;
   .banner_bg {
     width: 100%;
     height: 100%;
@@ -194,8 +202,9 @@ const copyToClipboard = (result: string) => {
   }
   .content {
     width: 80%;
-    text-align: center;
     margin: 0 auto;
+    padding: 30px 0;
+    text-align: center;
 
     h1 {
       font-size: 2.8rem;
@@ -208,12 +217,12 @@ const copyToClipboard = (result: string) => {
       line-height: 1.5;
       font-size: 1.25rem;
       color: #a3a3a3;
-      padding: 0 50px;
+      padding: 0 50px 40px;
     }
 
     #demo {
       position: relative;
-      margin: 45px 0;
+      //margin: 8% 0 0;
 
       button {
         position: absolute;

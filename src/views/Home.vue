@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import MainHeader from "../components/Header/index.vue";
 import MainButton from "../components/Button/index.vue";
 import FormDescription from "../components/Forms/FormDescription.vue";
@@ -41,6 +41,12 @@ const breadcrumbButtons = ref([
     action: "generate",
   },
 ] as Breadcrumb.Buttons[]);
+
+const productName = computed(() => {
+  return `O que achou dessa ideia para o item: 
+    <strong style="font-weight: bold;">${product.value}</strong>
+  `;
+});
 
 const triggerActions = (actions: string) => {
   switch (actions) {
@@ -171,10 +177,7 @@ onMounted(() => {
                 class="clipboard"
                 @click="copyToClipboard(result)"
               />
-              <p class="item">
-                O que achou dessa ideia para o item:
-                <strong>{{ product }}</strong>
-              </p>
+              <p class="item" v-html="productName"></p>
               <p style="user-select: none" class="description-content">
                 {{ result }}
               </p>

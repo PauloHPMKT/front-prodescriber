@@ -70,8 +70,8 @@ const submitDescription = (description: string) => {
     return;
   }
 
-  if (typeof descriptionLength === "string") {
-    message.value = descriptionLength;
+  if (description.length < 3) {
+    message.value = String(descriptionLength);
     popupStatus(isError, message.value, 2000);
     return;
   }

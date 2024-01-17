@@ -2,6 +2,7 @@
 import { useRouter } from "vue-router";
 import MainButton from "../Button/index.vue";
 import logo from "../../assets/img/logo_prodescriber.png";
+import { Icon } from "@iconify/vue";
 
 const router = useRouter();
 
@@ -14,7 +15,10 @@ const toLogin = () => router.push("/login");
       <img :src="logo" alt="Logo ProDescriber" />
     </div>
     <div>
-      <main-button @action="toLogin"> Crie sua conta </main-button>
+      <main-button @action="toLogin">
+        Acesse seu workspace
+        <Icon icon="tabler:user-up" />
+      </main-button>
     </div>
   </header>
 </template>

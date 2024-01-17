@@ -11,6 +11,13 @@ export namespace Breadcrumb {
   }
 }
 
+export namespace Accounts {
+  export interface Login {
+    email: string;
+    password: string;
+  }
+}
+
 export interface IconParams {
   name: string;
   title?: string;
@@ -18,4 +25,15 @@ export interface IconParams {
 
 export interface StatusProps {
   status_message: string;
+}
+
+export interface BaseInputProps {
+  label?: string;
+  hidePasswordRevealler?: boolean;
+  modelValue: string;
+  placeholder?: string;
+}
+
+export interface ReveallerPasswordProps {
+  is_password: boolean;
 }

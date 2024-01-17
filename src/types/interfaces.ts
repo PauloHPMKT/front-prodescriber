@@ -30,10 +30,18 @@ export interface StatusProps {
 export interface BaseInputProps {
   label?: string;
   hidePasswordRevealler?: boolean;
+  icon?: boolean;
   modelValue: string;
   placeholder?: string;
 }
 
 export interface ReveallerPasswordProps {
   is_password: boolean;
+}
+
+export interface NavigatePathsProps {
+  id: number;
+  router: string;
+  icon: string;
+  description: string;
 }

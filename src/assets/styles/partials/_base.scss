@@ -25,8 +25,21 @@ ul {
 
 a {
   text-decoration: none;
+  color: inherit;
 }
 
 p {
   color: #a3a3a3;
+}
+
+/* --scrollbar */
+::-webkit-scrollbar-track {
+  background-color: #f4f4f4;
+}
+::-webkit-scrollbar {
+  width: 8px;
+  background: #444849;
+}
+::-webkit-scrollbar-thumb {
+  background: #dad7d7;
 }

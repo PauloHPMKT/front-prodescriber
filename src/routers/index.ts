@@ -3,6 +3,7 @@ import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
 import Dashboard from "../views/workspace/dashboard.vue";
 import pageStructure from "../templates/pageStructure.vue";
+import usersVue from "../views/workspace/users.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -27,6 +28,11 @@ const router = createRouter({
           path: "dashboard",
           name: "dashboard",
           component: Dashboard,
+        },
+        {
+          path: "users",
+          name: "users",
+          component: usersVue,
         },
       ],
     },

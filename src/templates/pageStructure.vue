@@ -9,7 +9,8 @@ import Content from "./content.vue";
     <div class="container">
       <header class="user_header">
         <div>
-          <span>Bem vindo(a) Nome do usuario logado</span>
+          <span>Bom dia, Nome do usuario logado👋</span>
+          <span>Data e dia da semana</span>
         </div>
         <div class="user_info">
           <p>Nome do usuário</p>
@@ -29,18 +30,35 @@ import Content from "./content.vue";
   display: flex;
 
   .container {
-    width: 100%;
+    width: 85%;
+    background-color: #e7e6e8;
+    color: #121212;
     height: 100vh;
-    background-color: red;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
 
     .user_header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 10px 10px 20px 16%;
-      background-color: blue;
-      height: 10vh;
-      border-bottom: 1px solid #121212;
+      padding: 10px 20px;
+      background-color: #f9f8f9;
+      flex: 0 0 10vh;
+    }
+
+    main {
+      margin: 0 90px;
+      overflow: hidden;
+      height: 82vh;
+    }
+
+    footer {
+      height: 8vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #f9f8f9;
     }
   }
 }

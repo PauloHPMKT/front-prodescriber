@@ -6,7 +6,10 @@ export default {
   },
 
   login: (data: object) => {
-    console.log(data, "eu venho do api service");
     return api.post("/auth/login", data);
+  },
+
+  me: () => {
+    return api.get("/app/me");
   },
 };

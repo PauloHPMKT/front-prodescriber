@@ -100,7 +100,6 @@ const submitDescription = (description: string) => {
     .createDescription(requestData)
     .then((res) => {
       if (res.status === 200) {
-        loading.value = false;
         result.value = res.data.result.message.content;
         product.value = description;
         localStorage.setItem("description", product.value);
@@ -110,7 +109,12 @@ const submitDescription = (description: string) => {
       if (error) {
         message.value = "Erro ao gerar descrição!";
         popupStatus(isError, message.value, 2000);
+        loading.value = false;
+        showDemo.value = true;
       }
+    })
+    .finally(() => {
+      loading.value = false;
     });
 };
 

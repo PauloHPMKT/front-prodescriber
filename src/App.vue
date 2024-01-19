@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { onMounted } from "vue";
 import { useOnMounted } from "./composables/useOnMounted";
+import { useRouter } from "vue-router";
 
-const { checkBrowserConnection } = useOnMounted();
+const router = useRouter();
+const { checkBrowserConnection } = useOnMounted(router);
 
 onMounted(() => {
   checkBrowserConnection();

@@ -11,13 +11,6 @@ export namespace Breadcrumb {
   }
 }
 
-export namespace Accounts {
-  export interface Login {
-    email: string;
-    password: string;
-  }
-}
-
 export interface IconParams {
   name: string;
   title?: string;

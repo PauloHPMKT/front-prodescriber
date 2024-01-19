@@ -12,5 +12,13 @@ export const useAuthStore = defineStore("auth", {
       const res = await openaiService.login(body);
       return res;
     },
+    async getMe(): Promise<User> {
+      const { data } = await openaiService.me();
+      return data;
+    },
+    getCurrentUser(user: User) {
+      this.currentUser = user;
+      console.log(this.currentUser);
+    },
   },
 });

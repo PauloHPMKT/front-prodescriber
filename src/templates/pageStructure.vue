@@ -1,10 +1,31 @@
 <script setup lang="ts">
-import Sidebar from "../components/Sidebar/index.vue";
+import { computed, onMounted } from "vue";
 import Content from "./content.vue";
+import Sidebar from "../components/Sidebar/index.vue";
 import { useOnMounted } from "../composables/useOnMounted";
-import { onMounted } from "vue";
+import { useAuthStore } from "../store/index";
+import { useRouter } from "vue-router";
+import { useHelpers } from "../composables/useHelpers";
 
+const router = useRouter();
+const authStore = useAuthStore();
 const { dateTimeFormated } = useOnMounted();
+const { removeMultipleItems, truncate, greetings } = useHelpers();
+
+const username = computed(() => {
+  const currentUser = authStore.$state.currentUser.name;
+  return truncate(currentUser!);
+});
+
+const greetingsMessage = computed(() => {
+  return `${greetings()}, ${username.value}👋`;
+});
+
+const logout = () => {
+  const keys = ["access_token", "auth"];
+  removeMultipleItems(keys);
+  router.push({ name: "login" });
+};
 
 onMounted(() => {
   dateTimeFormated();
@@ -17,12 +38,12 @@ onMounted(() => {
     <div class="container">
       <header class="user_header">
         <div class="greetings">
-          <p>Bom dia, Nome do usuario logado👋</p>
+          <p>{{ greetingsMessage }}</p>
           <span>{{ dateTimeFormated() }}</span>
         </div>
         <div class="user_info">
           <p>Nome do usuário</p>
-          <p>Logout</p>
+          <p @click="logout">Logout</p>
         </div>
       </header>
       <main>

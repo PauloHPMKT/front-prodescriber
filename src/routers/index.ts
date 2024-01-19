@@ -1,9 +1,24 @@
-import { createRouter, createWebHistory } from "vue-router";
+import {
+  NavigationGuardNext,
+  RouteLocation,
+  createRouter,
+  createWebHistory,
+} from "vue-router";
 import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
+import NotFoundPage from "../views/NotFoundPage.vue";
 import Dashboard from "../views/workspace/dashboard.vue";
 import pageStructure from "../templates/pageStructure.vue";
 import usersVue from "../views/workspace/users.vue";
+
+const authGuard =
+  () => (to: RouteLocation, from: RouteLocation, next: NavigationGuardNext) => {
+    if (localStorage.getItem("access_token") || "") {
+      next();
+    } else {
+      next("/");
+    }
+  };
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -22,6 +37,7 @@ const router = createRouter({
       path: "/app",
       name: "template",
       redirect: "/app/dashboard",
+      beforeEnter: authGuard(),
       component: pageStructure,
       children: [
         {
@@ -35,6 +51,11 @@ const router = createRouter({
           component: usersVue,
         },
       ],
+    },
+    {
+      path: "/:pathMatch(.*)*",
+      name: "notfound",
+      component: NotFoundPage,
     },
   ],
 });

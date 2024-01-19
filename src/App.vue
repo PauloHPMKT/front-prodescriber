@@ -1,7 +1,18 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { onMounted } from "vue";
+import { useOnMounted } from "./composables/useOnMounted";
+
+const { checkBrowserConnection } = useOnMounted();
+
+onMounted(() => {
+  checkBrowserConnection();
+});
+</script>
 
 <template>
-  <router-view></router-view>
+  <div>
+    <router-view></router-view>
+  </div>
 </template>
 
 <style scoped lang="scss">

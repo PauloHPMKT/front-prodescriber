@@ -1,3 +1,7 @@
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
 export const useOnMounted = () => {
   function removeFromStorageOnLoad(item: string) {
     if (item) {
@@ -19,8 +23,22 @@ export const useOnMounted = () => {
     return date;
   }
 
+  function checkBrowserConnection() {
+    if ("onoffline" in window) {
+      window.addEventListener("offline", function () {
+        console.log("Disconnected...so sad!!!");
+        router.push({ name: "connectionrefused" });
+      });
+    }
+
+    window.addEventListener("online", () => {
+      router.go(-1);
+    });
+  }
+
   return {
     removeFromStorageOnLoad,
     dateTimeFormated,
+    checkBrowserConnection,
   };
 };

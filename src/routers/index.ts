@@ -10,6 +10,7 @@ import NotFoundPage from "../views/NotFoundPage.vue";
 import Dashboard from "../views/workspace/dashboard.vue";
 import pageStructure from "../templates/pageStructure.vue";
 import usersVue from "../views/workspace/users.vue";
+import ConnectionDown from "../views/ConnectionDown.vue";
 
 const authGuard =
   () => (to: RouteLocation, from: RouteLocation, next: NavigationGuardNext) => {
@@ -56,6 +57,11 @@ const router = createRouter({
       path: "/:pathMatch(.*)*",
       name: "notfound",
       component: NotFoundPage,
+    },
+    {
+      path: "/index",
+      name: "connectionrefused",
+      component: ConnectionDown,
     },
   ],
 });

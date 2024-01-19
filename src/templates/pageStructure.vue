@@ -1,6 +1,14 @@
 <script setup lang="ts">
 import Sidebar from "../components/Sidebar/index.vue";
 import Content from "./content.vue";
+import { useOnMounted } from "../composables/useOnMounted";
+import { onMounted } from "vue";
+
+const { dateTimeFormated } = useOnMounted();
+
+onMounted(() => {
+  dateTimeFormated();
+});
 </script>
 
 <template>
@@ -8,9 +16,9 @@ import Content from "./content.vue";
     <sidebar />
     <div class="container">
       <header class="user_header">
-        <div>
-          <span>Bom dia, Nome do usuario logado👋</span>
-          <span>Data e dia da semana</span>
+        <div class="greetings">
+          <p>Bom dia, Nome do usuario logado👋</p>
+          <span>{{ dateTimeFormated() }}</span>
         </div>
         <div class="user_info">
           <p>Nome do usuário</p>
@@ -45,6 +53,21 @@ import Content from "./content.vue";
       padding: 10px 20px;
       background-color: #f9f8f9;
       flex: 0 0 10vh;
+
+      .greetings {
+        display: flex;
+        flex-direction: column;
+
+        p {
+          color: #121212;
+          font-weight: 600;
+        }
+
+        span {
+          color: #a3a3a3;
+          font-size: 0.9rem;
+        }
+      }
     }
 
     main {

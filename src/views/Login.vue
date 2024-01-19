@@ -6,7 +6,9 @@ import DefaultIcon from "../components/Icons/defaultIcon.vue";
 import logo from "../assets/img/logo_prodescriber.png";
 import FormLogin from "../components/Forms/FormLogin.vue";
 import { Accounts } from "../types/interfaces";
+import { useAuthStore } from "../store/index";
 
+const authStore = useAuthStore();
 const router = useRouter();
 const isTextVisible = ref(false);
 
@@ -20,8 +22,21 @@ const hideText = () => {
 
 const toHomePage = () => router.push({ name: "home" });
 
-const submitLogin = (data: Accounts.Login) => {
-  console.log(data, "Dados do Login");
+const submitLogin = async (request: Accounts.Login) => {
+  try {
+    const authLogin = await authStore.login(request);
+    const { data, status } = authLogin;
+    if (status === 200) {
+      const access_token = data.access_token;
+      const user = data.user;
+      localStorage.setItem("access_token", access_token);
+      authStore.getCurrentUser(user);
+
+      return router.push({ name: "dashboard" });
+    }
+  } catch (error) {
+    console.log(error);
+  }
 };
 </script>
 

@@ -6,7 +6,12 @@ import { Icon } from "@iconify/vue";
 
 const router = useRouter();
 
-const toLogin = () => router.push("/login");
+const toLogin = () => {
+  const userStoraged = localStorage.getItem("access_token");
+  !!userStoraged
+    ? router.push({ name: "dashboard" })
+    : router.push({ name: "login" });
+};
 </script>
 
 <template>

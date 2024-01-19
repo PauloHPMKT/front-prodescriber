@@ -7,6 +7,7 @@ export const useAuthStore = defineStore("auth", {
   state: () => ({
     currentUser: {} as User,
   }),
+  persist: true,
   actions: {
     async login(body: Account.Login) {
       const res = await openaiService.login(body);
@@ -14,11 +15,12 @@ export const useAuthStore = defineStore("auth", {
     },
     async getMe(): Promise<User> {
       const { data } = await openaiService.me();
+      console.log(data, "get me");
       return data;
     },
     getCurrentUser(user: User) {
-      this.currentUser = user;
-      console.log(this.currentUser);
+      this.$state.currentUser = user;
+      console.log(this.$state.currentUser);
     },
   },
 });

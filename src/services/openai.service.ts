@@ -2,7 +2,11 @@ import { api } from "./api";
 
 export default {
   createDescription: (messages: object) => {
-    console.log(messages);
     return api.post("/openai/chat", messages);
+  },
+
+  login: (data: object) => {
+    console.log(data, "eu venho do api service");
+    return api.post("/auth/login", data);
   },
 };

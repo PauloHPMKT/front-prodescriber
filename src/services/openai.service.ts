@@ -1,3 +1,4 @@
+import { Account } from "../types/account";
 import { api } from "./api";
 
 export default {
@@ -5,7 +6,7 @@ export default {
     return api.post("/openai/chat", messages);
   },
 
-  login: (data: object) => {
+  login: (data: Account.Login) => {
     return api.post("/auth/login", data);
   },
 

@@ -5,7 +5,7 @@ import Default from "../templates/default.vue";
 import DefaultIcon from "../components/Icons/defaultIcon.vue";
 import logo from "../assets/img/logo_prodescriber.png";
 import FormLogin from "../components/Forms/FormLogin.vue";
-import { Accounts } from "../types/interfaces";
+import { Account } from "../types/account";
 import { useAuthStore } from "../store/index";
 
 const authStore = useAuthStore();
@@ -22,20 +22,23 @@ const hideText = () => {
 
 const toHomePage = () => router.push({ name: "home" });
 
-const submitLogin = async (request: Accounts.Login) => {
+const submitLogin = async (request: Account.Login) => {
   try {
     const authLogin = await authStore.login(request);
     const { data, status } = authLogin;
     if (status === 200) {
       const access_token = data.access_token;
-      const user = data.user;
       localStorage.setItem("access_token", access_token);
+      const user = data.user;
       authStore.getCurrentUser(user);
 
       return router.push({ name: "dashboard" });
     }
   } catch (error) {
     console.log(error);
+    /**
+     * Inserir um toast de erro
+     */
   }
 };
 </script>

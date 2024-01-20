@@ -45,6 +45,7 @@ const router = createRouter({
           path: "dashboard",
           name: "dashboard",
           component: Dashboard,
+          props: (router) => ({ description: router.query.description }),
         },
         {
           path: "users",

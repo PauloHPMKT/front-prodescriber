@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from "vue";
+import { useRouter } from "vue-router";
 import MainHeader from "../components/Header/index.vue";
 import MainButton from "../components/Button/index.vue";
 import FormDescription from "../components/Forms/FormDescription.vue";
@@ -15,6 +16,7 @@ import { usePopup } from "../composables/usePopup";
 import { useValidation } from "../composables/useValidation";
 import { useOnMounted } from "../composables/useOnMounted";
 
+const router = useRouter();
 const { popupStatus } = usePopup();
 const { minLength, required } = useValidation();
 const { removeFromStorageOnLoad } = useOnMounted();
@@ -51,7 +53,8 @@ const productName = computed(() => {
 const triggerActions = (actions: string) => {
   switch (actions) {
     case Breadcrumb.Actions.LIKE:
-      console.log("like");
+      const isLogged = localStorage.getItem("access_token");
+      saveDescription(isLogged);
       break;
     case Breadcrumb.Actions.DISLIKE:
       const description = localStorage.getItem("description");
@@ -64,6 +67,22 @@ const triggerActions = (actions: string) => {
     default:
       break;
   }
+};
+
+const saveDescription = (token: string | null) => {
+  if (!!token) {
+    router.push({ name: "dashboard", query: { description: result.value } });
+    /**
+     *
+     * Criar logica que joga para a dashboard e salva a descrição
+     * porem será necessário criar um endpoint para salvar a descrição
+     * ja dentro da dashboard
+     * ver a possibilidade de usar ref para chamar um componente em outra view
+     */
+  } else {
+    router.push({ name: "login" });
+  }
+  console.log(token);
 };
 
 const submitDescription = (description: string) => {

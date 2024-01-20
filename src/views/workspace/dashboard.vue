@@ -1,13 +1,18 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import { Icon } from "@iconify/vue";
+import { useRouter } from "vue-router";
 import MainButton from "../../components/Button/index.vue";
 import BaseInput from "../../components/Inputs/BaseInput.vue";
-import { useAuthStore } from "../../store";
+import SaveDescription from "../../components/Modals/saveDescription.vue";
 
-const authStore = useAuthStore();
-const showDescription = ref(false);
+const router = useRouter();
+
 const product = ref("");
+const description = ref(router.currentRoute.value.query.description);
+const save_description = ref(null);
+const showDescription = ref(false);
+const isDescriptionToSave = ref(false);
 
 const toggleDescription = () => {
   showDescription.value = !showDescription.value;
@@ -17,13 +22,22 @@ const handleSearchProduct = () => {
   console.log("Encontrou o produto!", product.value);
 };
 
+const showModalWhenDescriptionExists = () => {
+  if (description.value) isDescriptionToSave.value = true;
+};
+
 onMounted(() => {
-  console.log(authStore.$state);
+  showModalWhenDescriptionExists();
 });
 </script>
 
 <template>
   <div class="dashboard_container">
+    <save-description
+      ref="save_description"
+      :description="description"
+      v-if="isDescriptionToSave"
+    />
     <div class="inner_header">
       <h2>Dashboard - Gerenciador de Lista</h2>
       <div class="toolbar">

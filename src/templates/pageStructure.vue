@@ -11,7 +11,7 @@ import { useHelpers } from "../composables/useHelpers";
 const router = useRouter();
 const authStore = useAuthStore();
 const { dateTimeFormated } = useOnMounted();
-const { removeMultipleItems, truncate, greetings } = useHelpers();
+const { removeMultipleKeysStoraged, truncate, greetings } = useHelpers();
 
 const username = computed(() => {
   const currentUser = authStore.$state.currentUser.name;
@@ -24,7 +24,7 @@ const greetingsMessage = computed(() => {
 
 const logout = () => {
   const keys = ["access_token", "auth"];
-  removeMultipleItems(keys);
+  removeMultipleKeysStoraged(keys);
   router.push({ name: "login" });
 };
 

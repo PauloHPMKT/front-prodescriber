@@ -1,8 +1,10 @@
 export const useHelpers = () => {
-  function removeMultipleItems(keys: string[]) {
-    keys.forEach((key) => {
-      localStorage.removeItem(key);
-    });
+  function removeMultipleKeysStoraged(keys: string[]) {
+    if (keys) {
+      keys.forEach((key) => {
+        localStorage.removeItem(key);
+      });
+    }
   }
 
   function truncate(text: string): string {
@@ -22,7 +24,7 @@ export const useHelpers = () => {
   }
 
   return {
-    removeMultipleItems,
+    removeMultipleKeysStoraged,
     truncate,
     greetings,
   };

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted } from "vue";
+import { Icon } from "@iconify/vue";
 import Content from "./content.vue";
 import Sidebar from "../components/Sidebar/index.vue";
 import { useOnMounted } from "../composables/useOnMounted";
@@ -42,8 +43,8 @@ onMounted(() => {
           <span>{{ dateTimeFormated() }}</span>
         </div>
         <div class="user_info">
-          <p>Nome do usuário</p>
-          <p @click="logout">Logout</p>
+          <p @click="logout">Sair</p>
+          <Icon icon="tabler:logout" />
         </div>
       </header>
       <main>
@@ -87,6 +88,22 @@ onMounted(() => {
         span {
           color: #a3a3a3;
           font-size: 0.9rem;
+        }
+      }
+
+      .user_info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #a3a3a3;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+
+        &:hover {
+          background-color: #121212;
+          color: #e7e6e8;
+          padding: 4px 8px;
+          border-radius: 6px;
         }
       }
     }

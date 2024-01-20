@@ -32,7 +32,13 @@ const submitLogin = async (request: Account.Login) => {
       const user = data.user;
       authStore.getCurrentUser(user);
 
-      return router.push({ name: "dashboard" });
+      const description = localStorage.getItem("result");
+      return description
+        ? router.push({
+            name: "dashboard",
+            query: { description },
+          })
+        : router.push({ name: "dashboard" });
     }
   } catch (error) {
     console.log(error);

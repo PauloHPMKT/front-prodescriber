@@ -72,17 +72,10 @@ const triggerActions = (actions: string) => {
 const saveDescription = (token: string | null) => {
   if (!!token) {
     router.push({ name: "dashboard", query: { description: result.value } });
-    /**
-     *
-     * Criar logica que joga para a dashboard e salva a descrição
-     * porem será necessário criar um endpoint para salvar a descrição
-     * ja dentro da dashboard
-     * ver a possibilidade de usar ref para chamar um componente em outra view
-     */
   } else {
+    localStorage.setItem("result", result.value);
     router.push({ name: "login" });
   }
-  console.log(token);
 };
 
 const submitDescription = (description: string) => {

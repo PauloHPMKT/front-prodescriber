@@ -20,6 +20,10 @@ export interface StatusProps {
   status_message: string;
 }
 
+export interface DescriptionProps {
+  description: string;
+}
+
 export interface BaseInputProps {
   label?: string;
   hidePasswordRevealler?: boolean;

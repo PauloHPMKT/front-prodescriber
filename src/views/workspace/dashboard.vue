@@ -5,8 +5,10 @@ import { useRouter } from "vue-router";
 import MainButton from "../../components/Button/index.vue";
 import BaseInput from "../../components/Inputs/BaseInput.vue";
 import SaveDescription from "../../components/Modals/saveDescription.vue";
+import { useHelpers } from "../../composables/useHelpers";
 
 const router = useRouter();
+const { removeMultipleKeysStoraged } = useHelpers();
 
 const product = ref("");
 const description = ref(router.currentRoute.value.query.description);
@@ -28,6 +30,7 @@ const showModalWhenDescriptionExists = () => {
 
 onMounted(() => {
   showModalWhenDescriptionExists();
+  removeMultipleKeysStoraged(["description", "result"]);
 });
 </script>
 

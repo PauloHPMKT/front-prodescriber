@@ -1,11 +1,43 @@
 <script setup lang="ts">
+import { ref, defineExpose } from "vue";
 import { StatusProps } from "../../types/interfaces";
+import { useNotification } from "../../composables/useNotification";
+
+const { statusNotification } = useNotification();
 
 defineProps<StatusProps>();
+
+const isVisible = ref(false);
+const isActive = ref(false);
+const isError = ref(false);
+
+const open = () => (isVisible.value = true);
+const close = () => (isVisible.value = false);
+
+const success = (message: string) => {
+  open();
+  statusNotification(isActive, message);
+};
+
+const error = (message: string) => {
+  open();
+  statusNotification(isError, message);
+};
+
+defineExpose({
+  open,
+  close,
+  success,
+  error,
+});
 </script>
 
 <template>
-  <div class="status_popup">
+  <div
+    class="status_popup"
+    :class="{ isPopupActive: isActive, hasError: isError }"
+    v-show="isVisible"
+  >
     <p>{{ status_message }}</p>
     <div id="baseline"></div>
   </div>
@@ -21,7 +53,7 @@ defineProps<StatusProps>();
   position: fixed;
   bottom: 35px;
   right: -100%;
-  z-index: 2006;
+  z-index: 2020;
   padding: 20px;
 
   p {
@@ -32,7 +64,7 @@ defineProps<StatusProps>();
 .isPopupActive {
   right: 0;
   transition: right 0.3s ease-in-out;
-  background: rgb(88, 219, 6);
+  background: rgb(68, 168, 5);
   color: #fff;
 
   #baseline {

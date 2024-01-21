@@ -1,21 +1,28 @@
 <script setup lang="ts">
+import { ref } from "vue";
 import DefaultIcon from "../Icons/defaultIcon.vue";
+import StatusPopup from "../Popup/Status.vue";
 import { DescriptionProps } from "../../types/interfaces";
 
 import { useClipboard } from "../../composables/useClipboard";
+
 const { copyToClipboard } = useClipboard();
 
 defineProps<DescriptionProps>();
-const emit = defineEmits(["to_show_popup"]);
+
+const toast = ref<InstanceType<typeof StatusPopup> | null>(null);
+const toastMessage = ref("");
 
 const handleCopyToClipboard = async (result: string) => {
   copyToClipboard(result);
-  emit("to_show_popup", "Descrição copiada com sucesso!");
+  toastMessage.value = "Descrição copiada com sucesso!";
+  toast.value?.success(toastMessage.value);
 };
 </script>
 
 <template>
   <article class="description">
+    <status-popup :status_message="toastMessage" ref="toast" />
     <default-icon
       :name="'tabler:copy'"
       :title="'Copiar descrição'"

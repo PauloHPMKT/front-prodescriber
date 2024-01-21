@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from "vue";
+import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import MainHeader from "../components/Header/index.vue";
 import MainButton from "../components/Button/index.vue";
@@ -7,28 +7,25 @@ import FormDescription from "../components/Forms/FormDescription.vue";
 import LoadSpinner from "../components/Loaders/LoadSpinner.vue";
 import BreadcrumbButtons from "../components/BreadcrumbButtons/index.vue";
 import Default from "../templates/default.vue";
-import DefaultIcon from "../components/Icons/defaultIcon.vue";
 import StatusPopup from "../components/Popup/Status.vue";
+import Description from "../components/Description/index.vue";
 
 import openAIService from "../services/openai.service";
 import { Breadcrumb } from "../types/interfaces";
-import { usePopup } from "../composables/usePopup";
 import { useValidation } from "../composables/useValidation";
 import { useOnMounted } from "../composables/useOnMounted";
 
 const router = useRouter();
-const { popupStatus } = usePopup();
 const { minLength, required } = useValidation();
 const { removeFromStorageOnLoad } = useOnMounted();
 
 const showDemo = ref(true);
 const show = ref(false);
 const loading = ref(false);
-const isActive = ref(false);
-const isError = ref(false);
 const product = ref("");
 const result = ref("");
 const message = ref("");
+const toast = ref<InstanceType<typeof StatusPopup> | null>(null);
 const breadcrumbButtons = ref([
   {
     label: "Gostei",
@@ -43,12 +40,6 @@ const breadcrumbButtons = ref([
     action: "generate",
   },
 ] as Breadcrumb.Buttons[]);
-
-const productName = computed(() => {
-  return `O que achou dessa ideia para o item: 
-    <strong style="font-weight: bold;">${product.value}</strong>
-  `;
-});
 
 const triggerActions = (actions: string) => {
   switch (actions) {
@@ -84,13 +75,13 @@ const submitDescription = (description: string) => {
 
   if (description === "") {
     message.value = String(isEmptyField);
-    popupStatus(isError, message.value, 2000);
+    toast.value?.error(message.value);
     return;
   }
 
   if (description.length < 3) {
     message.value = String(descriptionLength);
-    popupStatus(isError, message.value, 2000);
+    toast.value?.error(message.value);
     return;
   }
 
@@ -114,36 +105,19 @@ const submitDescription = (description: string) => {
       if (res.status === 200) {
         result.value = res.data.result.message.content;
         product.value = description;
-        localStorage.setItem("description", product.value);
+        localStorage.setItem("item", product.value);
       }
     })
     .catch((error: Error) => {
       if (error) {
         message.value = "Erro ao gerar descrição!";
-        popupStatus(isError, message.value, 2000);
+        toast.value?.error(message.value);
         loading.value = false;
         showDemo.value = true;
       }
     })
     .finally(() => {
       loading.value = false;
-    });
-};
-
-const copyToClipboard = (result: string) => {
-  const textToCopy = result;
-  navigator.clipboard
-    .writeText(textToCopy)
-    .then(() => {
-      message.value = "Descrição copiada com sucesso!";
-      popupStatus(isActive, message.value, 2000);
-    })
-    .catch((error) => {
-      console.error(error);
-      if (error) {
-        message.value = "Erro ao copiar descrição!";
-        popupStatus(isError, message.value, 2000);
-      }
     });
 };
 
@@ -154,10 +128,7 @@ onMounted(() => {
 
 <template>
   <div class="home_view">
-    <status-popup
-      :status_message="message"
-      :class="{ isPopupActive: isActive, hasError: isError }"
-    />
+    <status-popup :status_message="message" ref="toast" />
     <main-header />
     <main>
       <default>
@@ -186,24 +157,12 @@ onMounted(() => {
                 <load-spinner :loader_description="'Teste'" />
               </div>
             </div>
-            <article v-else class="description">
-              <default-icon
-                :name="'tabler:copy'"
-                :title="'Copiar descrição'"
-                class="clipboard"
-                @click="copyToClipboard(result)"
+            <description v-else :item="product" :result="result">
+              <breadcrumb-buttons
+                :buttons="breadcrumbButtons"
+                @actions="triggerActions"
               />
-              <p class="item" v-html="productName"></p>
-              <p style="user-select: none" class="description-content">
-                {{ result }}
-              </p>
-              <footer class="card-description-footer">
-                <breadcrumb-buttons
-                  :buttons="breadcrumbButtons"
-                  @actions="triggerActions"
-                />
-              </footer>
-            </article>
+            </description>
           </div>
         </div>
       </default>
@@ -279,45 +238,6 @@ onMounted(() => {
       padding: 30px;
       width: 600px;
       border-radius: 8px;
-    }
-
-    .description {
-      margin: 30px;
-      padding: 30px;
-      border-radius: 8px;
-      background: #fff;
-      position: relative;
-
-      .clipboard {
-        border-radius: 6px;
-        width: 36px;
-        height: 36px;
-        padding: 5px;
-        color: #121212;
-        font-size: 1.5rem;
-        position: absolute;
-        top: 20px;
-        right: 20px;
-        cursor: pointer;
-        transition: all 0.3s ease-in-out;
-
-        &:hover {
-          background-color: #121212;
-          color: #fff;
-        }
-      }
-
-      .item,
-      .description-content {
-        color: #121212;
-        margin-bottom: 20px;
-      }
-
-      .card-description-footer {
-        margin-top: 50px;
-        display: flex;
-        justify-content: center;
-      }
     }
   }
 }

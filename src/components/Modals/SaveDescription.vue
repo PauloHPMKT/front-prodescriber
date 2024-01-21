@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { onMounted } from "vue";
 import Description from "../Description/index.vue";
-import { DescriptionProps } from "../../types/interfaces";
 import overlay from "../../templates/overlay.vue";
+import MainButton from "../Button/index.vue";
+import { DescriptionProps } from "../../types/interfaces";
 
 const props = defineProps<DescriptionProps>();
 const emit = defineEmits(["hideDescriptionModal"]);
+
 // const productName = computed(() => {
 //   return `Que ótimo que gostou da descrição para o item:
 //     <strong style="font-weight: bold;">${props.item}</strong>.
@@ -17,9 +19,7 @@ const leaveDescription = () => {
   emit("hideDescriptionModal");
 };
 
-onMounted(() => {
-  console.log(props);
-});
+onMounted(() => {});
 </script>
 
 <template>
@@ -29,8 +29,10 @@ onMounted(() => {
       :result="props.result"
       class="container_modal"
     >
-      <button>Sim</button>
-      <button @click="leaveDescription">Cancelar</button>
+      <div class="button_container">
+        <main-button>Sim</main-button>
+        <main-button @click="leaveDescription">Cancelar</main-button>
+      </div>
     </description>
   </overlay>
 </template>
@@ -45,23 +47,10 @@ onMounted(() => {
   max-height: 80%;
   overflow: auto;
 
-  .clipboard {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    border-radius: 6px;
-    width: 36px;
-    height: 36px;
-    padding: 5px;
-    color: #121212;
-    font-size: 1.5rem;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-
-    &:hover {
-      background-color: #121212;
-      color: #fff;
-    }
+  .button_container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 6px;
   }
 
   .item,

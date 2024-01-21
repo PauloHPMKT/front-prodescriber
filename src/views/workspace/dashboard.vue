@@ -4,7 +4,8 @@ import { Icon } from "@iconify/vue";
 import { useRouter } from "vue-router";
 import MainButton from "../../components/Button/index.vue";
 import BaseInput from "../../components/Inputs/BaseInput.vue";
-import SaveDescription from "../../components/Modals/saveDescription.vue";
+import SaveDescription from "../../components/Modals/SaveDescription.vue";
+import CreateDescriptionWorkspace from "../../components/Forms/CreateDescriptionWorkspace.vue";
 import { useHelpers } from "../../composables/useHelpers";
 
 const router = useRouter();
@@ -12,7 +13,9 @@ const { removeMultipleKeysStoraged } = useHelpers();
 
 const product = ref("");
 const description = ref(router.currentRoute.value.query.description);
+const item = ref(localStorage.getItem("item")!);
 const save_description = ref(null);
+const descriptionModal = ref<typeof CreateDescriptionWorkspace | null>(null);
 const showDescription = ref(false);
 const isDescriptionToSave = ref(false);
 
@@ -28,9 +31,20 @@ const showModalWhenDescriptionExists = () => {
   if (description.value) isDescriptionToSave.value = true;
 };
 
+const hideDescriptionModal = () => {
+  isDescriptionToSave.value = false;
+  localStorage.removeItem("item");
+  router.push({ name: "dashboard", query: {} });
+};
+
+const openCreateNewDescription = () => {
+  descriptionModal.value?.openModal();
+};
+
 onMounted(() => {
   showModalWhenDescriptionExists();
-  removeMultipleKeysStoraged(["description", "result"]);
+  removeMultipleKeysStoraged(["result"]);
+  console.log(description, isDescriptionToSave.value);
 });
 </script>
 
@@ -38,9 +52,12 @@ onMounted(() => {
   <div class="dashboard_container">
     <save-description
       ref="save_description"
-      :description="description"
       v-if="isDescriptionToSave"
+      :item="item"
+      :result="String(description)"
+      @hide-description-modal="hideDescriptionModal"
     />
+    <create-description-workspace ref="descriptionModal" />
     <div class="inner_header">
       <h2>Dashboard - Gerenciador de Lista</h2>
       <div class="toolbar">
@@ -76,7 +93,7 @@ onMounted(() => {
             <Icon icon="tabler:menu" />
           </div>
         </div>
-        <main-button class="config_button">
+        <main-button class="config_button" @click="openCreateNewDescription">
           Criar uma nova Descrição
           <Icon icon="tabler:plus" />
         </main-button>

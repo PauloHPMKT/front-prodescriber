@@ -21,7 +21,8 @@ export interface StatusProps {
 }
 
 export interface DescriptionProps {
-  description: string;
+  item: string;
+  result: string;
 }
 
 export interface BaseInputProps {

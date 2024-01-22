@@ -14,8 +14,12 @@ import openAIService from "../services/openai.service";
 import { Breadcrumb } from "../types/interfaces";
 import { useValidation } from "../composables/useValidation";
 import { useOnMounted } from "../composables/useOnMounted";
+import { useOpenai } from "../composables/useOpenai";
+import { useAuthStore } from "../store";
 
 const router = useRouter();
+const authStore = useAuthStore();
+const { chatRequest } = useOpenai();
 const { minLength, required } = useValidation();
 const { removeFromStorageOnLoad } = useOnMounted();
 
@@ -48,7 +52,7 @@ const triggerActions = (actions: string) => {
       saveDescription(isLogged);
       break;
     case Breadcrumb.Actions.DISLIKE:
-      const description = localStorage.getItem("description");
+      const description = localStorage.getItem("item");
       submitDescription(String(description));
       break;
     case Breadcrumb.Actions.GENERATE:
@@ -89,18 +93,12 @@ const submitDescription = (description: string) => {
   showDemo.value = false;
 
   const prompt = `Gere uma descrição resumida e eficiente, SEO-friendly para o produto: ${description}.`;
-
-  const requestData = {
-    messages: [
-      {
-        role: "user",
-        content: prompt,
-      },
-    ],
-  };
+  const gptRole = authStore.currentUser.role_gpt_generate || "user";
+  const request = chatRequest(gptRole, prompt);
+  console.log(request);
 
   openAIService
-    .createDescription(requestData)
+    .createDescription(request)
     .then((res) => {
       if (res.status === 200) {
         result.value = res.data.result.message.content;

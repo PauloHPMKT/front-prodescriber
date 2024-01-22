@@ -25,6 +25,7 @@ const greetingsMessage = computed(() => {
 const logout = () => {
   const keys = ["access_token", "auth"];
   removeMultipleKeysStoraged(keys);
+  authStore.logout();
   router.push({ name: "login" });
 };
 

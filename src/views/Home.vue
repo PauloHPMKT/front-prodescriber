@@ -153,7 +153,9 @@ onMounted(() => {
           <div v-else>
             <div v-if="loading" style="text-align: center">
               <div class="loader_container">
-                <load-spinner :loader_description="'Teste'" />
+                <load-spinner
+                  :loader_description="'Aguarde enquanto geramos a sua descrição perfeita!'"
+                />
               </div>
             </div>
             <description v-else :item="product" :result="result">

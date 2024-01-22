@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { User } from "../types/user";
 import { Account } from "../types/account";
-import openaiService from "../services/openai.service";
+import userService from "../services/user.service";
 
 export const useAuthStore = defineStore("auth", {
   state: () => ({
@@ -10,11 +10,11 @@ export const useAuthStore = defineStore("auth", {
   persist: true,
   actions: {
     async login(body: Account.Login) {
-      const res = await openaiService.login(body);
+      const res = await userService.login(body);
       return res;
     },
     async getMe(): Promise<User> {
-      const { data } = await openaiService.me();
+      const { data } = await userService.me();
       console.log(data, "get me");
       return data;
     },

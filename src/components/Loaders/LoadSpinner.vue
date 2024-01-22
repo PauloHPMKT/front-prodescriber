@@ -1,13 +1,13 @@
 <script setup lang="ts">
-const props = defineProps({
-  loader_description: { type: String },
-});
+import { LoaderProps } from "../../types/interfaces";
+
+defineProps<LoaderProps>();
 </script>
 
 <template>
   <div class="loader-container">
     <div class="loader"></div>
-    <p>{{ loader_description.value }}</p>
+    <p>{{ loader_description }}</p>
   </div>
 </template>
 

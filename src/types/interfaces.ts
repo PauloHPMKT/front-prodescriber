@@ -16,6 +16,10 @@ export interface IconParams {
   title?: string;
 }
 
+export interface LoaderProps {
+  loader_description: string;
+}
+
 export interface StatusProps {
   status_message: string;
 }

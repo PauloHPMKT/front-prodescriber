@@ -1,3 +1,4 @@
+import { AxiosRequestConfig } from "axios";
 import { api } from "./api";
 
 export default {
@@ -5,7 +6,7 @@ export default {
     return api.post("/openai/chat", messages);
   },
 
-  listDescriptions: () => {
-    return api.get("/openai/chat");
+  listDescriptions: (data?: AxiosRequestConfig) => {
+    return api.get("/openai/history", data);
   },
 };

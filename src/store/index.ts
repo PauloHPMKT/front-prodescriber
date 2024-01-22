@@ -22,5 +22,8 @@ export const useAuthStore = defineStore("auth", {
       this.$state.currentUser = user;
       console.log(this.$state.currentUser);
     },
+    logout() {
+      this.$state.currentUser = {} as User;
+    },
   },
 });

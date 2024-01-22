@@ -6,10 +6,13 @@ import MainButton from "../../components/Button/index.vue";
 import BaseInput from "../../components/Inputs/BaseInput.vue";
 import SaveDescription from "../../components/Modals/SaveDescription.vue";
 import CreateDescriptionWorkspace from "../../components/Forms/CreateDescriptionWorkspace.vue";
+import openAIService from "../../services/openai.service";
 import { useHelpers } from "../../composables/useHelpers";
+import { useHttp } from "../../composables/useHttp";
 
 const router = useRouter();
 const { removeMultipleKeysStoraged } = useHelpers();
+const { filterResponse } = useHttp();
 
 const product = ref("");
 const description = ref(router.currentRoute.value.query.description);
@@ -18,8 +21,15 @@ const save_description = ref(null);
 const descriptionModal = ref<typeof CreateDescriptionWorkspace | null>(null);
 const showDescription = ref(false);
 const isDescriptionToSave = ref(false);
+const listDescriptions = ref(
+  [] as { _id: string; prompt: string; result: string }[]
+);
+const descriptionId = ref("");
 
-const toggleDescription = () => {
+const toggleDescription = (id: string) => {
+  descriptionId.value = id;
+  console.log(descriptionId.value);
+
   showDescription.value = !showDescription.value;
 };
 
@@ -41,9 +51,23 @@ const openCreateNewDescription = () => {
   descriptionModal.value?.openModal();
 };
 
+const getListDescriptions = () => {
+  const config = filterResponse({
+    _id: "_id",
+    prompt: "message.content",
+    result: "result.message.content",
+  });
+  openAIService.listDescriptions(config).then((response) => {
+    const { data } = response;
+    listDescriptions.value = data;
+    console.log(listDescriptions.value);
+  });
+};
+
 onMounted(() => {
   showModalWhenDescriptionExists();
   removeMultipleKeysStoraged(["result"]);
+  getListDescriptions();
   console.log(description, isDescriptionToSave.value);
 });
 </script>
@@ -101,74 +125,21 @@ onMounted(() => {
     </div>
     <div class="description_container">
       <ul>
-        <li>
-          <div @click="toggleDescription" class="description_title">
-            <p>Descrição para o produto: Notebook Lenovo 16gb i5</p>
+        <li v-for="description in listDescriptions" :key="description._id">
+          <div
+            @click="toggleDescription(description._id)"
+            class="description_title"
+          >
+            <p>{{ description.prompt }}</p>
             <div class="icon">
               <Icon icon="tabler:dots-vertical" />
             </div>
           </div>
-          <div v-if="showDescription" class="description">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam atque
-            officiis tenetur aspernatur modi asperiores eveniet? Dicta aut animi
-            et in illo officia libero, vel, maiores voluptates, velit mollitia
-            deserunt?
-          </div>
-        </li>
-        <li>
-          <div @click="toggleDescription" class="description_title">
-            <p>Descrição para o produto: Notebook Lenovo 16gb i5</p>
-            <div class="icon">
-              <Icon icon="tabler:dots-vertical" />
-            </div>
-          </div>
-          <div v-if="showDescription" class="description">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam atque
-            officiis tenetur aspernatur modi asperiores eveniet? Dicta aut animi
-            et in illo officia libero, vel, maiores voluptates, velit mollitia
-            deserunt?
-          </div>
-        </li>
-        <li>
-          <div @click="toggleDescription" class="description_title">
-            <p>Descrição para o produto: Notebook Lenovo 16gb i5</p>
-            <div class="icon">
-              <Icon icon="tabler:dots-vertical" />
-            </div>
-          </div>
-          <div v-if="showDescription" class="description">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam atque
-            officiis tenetur aspernatur modi asperiores eveniet? Dicta aut animi
-            et in illo officia libero, vel, maiores voluptates, velit mollitia
-            deserunt?
-          </div>
-        </li>
-        <li @click="toggleDescription">
-          <div class="description_title">
-            <p>Descrição para o produto: Notebook Lenovo 16gb i5</p>
-            <div class="icon">
-              <Icon icon="tabler:dots-vertical" />
-            </div>
-          </div>
-          <div v-if="showDescription" class="description">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam atque
-            officiis tenetur aspernatur modi asperiores eveniet? Dicta aut animi
-            et in illo officia libero, vel, maiores voluptates, velit mollitia
-            deserunt?
-          </div>
-        </li>
-        <li @click="toggleDescription">
-          <div class="description_title">
-            <p>Descrição para o produto: Notebook Lenovo 16gb i5</p>
-            <div class="icon">
-              <Icon icon="tabler:dots-vertical" />
-            </div>
-          </div>
-          <div v-if="showDescription" class="description">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam atque
-            officiis tenetur aspernatur modi asperiores eveniet? Dicta aut animi
-            et in illo officia libero, vel, maiores voluptates, velit mollitia
-            deserunt?
+          <div
+            v-if="showDescription && descriptionId === description._id"
+            class="description"
+          >
+            {{ description.result }}
           </div>
         </li>
       </ul>

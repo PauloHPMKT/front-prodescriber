@@ -16,12 +16,14 @@ import { useValidation } from "../composables/useValidation";
 import { useOnMounted } from "../composables/useOnMounted";
 import { useOpenai } from "../composables/useOpenai";
 import { useAuthStore } from "../store";
+import { useHelpers } from "../composables/useHelpers";
 
 const router = useRouter();
 const authStore = useAuthStore();
 const { chatRequest } = useOpenai();
 const { minLength, required } = useValidation();
 const { removeFromStorageOnLoad } = useOnMounted();
+const { addMultipleKeysStoraged } = useHelpers();
 
 const showDemo = ref(true);
 const show = ref(false);
@@ -95,7 +97,6 @@ const submitDescription = (description: string) => {
   const prompt = `Gere uma descrição resumida e eficiente, SEO-friendly para o produto: ${description}.`;
   const gptRole = authStore.currentUser.role_gpt_generate || "user";
   const request = chatRequest(gptRole, prompt);
-  console.log(request);
 
   openAIService
     .createDescription(request)
@@ -103,7 +104,7 @@ const submitDescription = (description: string) => {
       if (res.status === 200) {
         result.value = res.data.result.message.content;
         product.value = description;
-        localStorage.setItem("item", product.value);
+        addMultipleKeysStoraged({ item: product.value, prompt });
       }
     })
     .catch((error: Error) => {

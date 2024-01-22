@@ -7,8 +7,17 @@ export const useHelpers = () => {
     }
   }
 
+  function addMultipleKeysStoraged(obj: { [key: string]: any }) {
+    if (obj) {
+      const list = Object.keys(obj);
+      list.forEach((key) => {
+        localStorage.setItem(key, obj[key]);
+      });
+    }
+  }
+
   function truncate(text: string): string {
-    return text.split(" ").slice(0, 2).toString().replace(",", " ");
+    return text && text.split(" ").slice(0, 2).toString().replace(",", " ");
   }
 
   function greetings(): string {
@@ -25,6 +34,7 @@ export const useHelpers = () => {
 
   return {
     removeMultipleKeysStoraged,
+    addMultipleKeysStoraged,
     truncate,
     greetings,
   };

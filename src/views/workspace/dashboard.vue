@@ -68,7 +68,6 @@ onMounted(() => {
   showModalWhenDescriptionExists();
   removeMultipleKeysStoraged(["result"]);
   getListDescriptions();
-  console.log(description, isDescriptionToSave.value);
 });
 </script>
 
@@ -126,11 +125,15 @@ onMounted(() => {
     <div class="description_container">
       <ul>
         <li v-for="description in listDescriptions" :key="description._id">
-          <div
-            @click="toggleDescription(description._id)"
-            class="description_title"
-          >
-            <p>{{ description.prompt }}</p>
+          <div style="display: flex">
+            <div
+              class="description_title"
+              @click="toggleDescription(description._id)"
+            >
+              <p>
+                {{ description.prompt }}
+              </p>
+            </div>
             <div class="icon">
               <Icon icon="tabler:dots-vertical" />
             </div>
@@ -213,15 +216,14 @@ onMounted(() => {
         flex: 1;
         justify-content: space-between;
         align-items: center;
-
-        .icon {
-          background-color: #e7e6e8;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          padding: 10px;
-          border-radius: 4px;
-        }
+      }
+      .icon {
+        background-color: #e7e6e8;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;
+        border-radius: 4px;
       }
 
       .description {

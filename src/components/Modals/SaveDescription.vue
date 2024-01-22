@@ -4,6 +4,12 @@ import Description from "../Description/index.vue";
 import overlay from "../../templates/overlay.vue";
 import MainButton from "../Button/index.vue";
 import { DescriptionProps } from "../../types/interfaces";
+import openAIService from "../../services/openai.service";
+
+import { useHelpers } from "../../composables/useHelpers";
+import { AxiosResponse } from "axios";
+
+const { removeMultipleKeysStoraged } = useHelpers();
 
 const props = defineProps<DescriptionProps>();
 const emit = defineEmits(["hideDescriptionModal"]);
@@ -19,6 +25,17 @@ const leaveDescription = () => {
   emit("hideDescriptionModal");
 };
 
+const save = () => {
+  const save = {
+    prompt: localStorage.getItem("prompt"),
+    content: props.result,
+  };
+  openAIService.saveDescription(save).then((res: AxiosResponse<any, any>) => {
+    console.log(res.data);
+    removeMultipleKeysStoraged(["item", "prompt"]);
+  });
+};
+
 onMounted(() => {});
 </script>
 
@@ -30,7 +47,7 @@ onMounted(() => {});
       class="container_modal"
     >
       <div class="button_container">
-        <main-button>Sim</main-button>
+        <main-button @click="save">Sim</main-button>
         <main-button @click="leaveDescription">Cancelar</main-button>
       </div>
     </description>

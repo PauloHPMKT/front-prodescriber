@@ -9,4 +9,9 @@ export default {
   listDescriptions: (data?: AxiosRequestConfig) => {
     return api.get("/openai/history", data);
   },
+
+  saveDescription: (data: any) => {
+    console.log(data);
+    return api.post("/openai/save-response", data);
+  },
 };

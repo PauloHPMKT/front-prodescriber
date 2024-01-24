@@ -7,4 +7,10 @@ export namespace Openai {
   export interface ChatRequest {
     messages: Message[];
   }
+
+  export interface ChatResponse {
+    item: string;
+    prompt: string;
+    result: string;
+  }
 }

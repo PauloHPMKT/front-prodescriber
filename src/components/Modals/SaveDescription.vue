@@ -1,15 +1,20 @@
 <script setup lang="ts">
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import Description from "../Description/index.vue";
 import overlay from "../../templates/overlay.vue";
 import MainButton from "../Button/index.vue";
+import StatusPopup from "../Popup/Status.vue";
+
 import { DescriptionProps } from "../../types/interfaces";
 import openAIService from "../../services/openai.service";
-
 import { useHelpers } from "../../composables/useHelpers";
 import { AxiosResponse } from "axios";
 
 const { removeMultipleKeysStoraged } = useHelpers();
+
+const toast = ref<InstanceType<typeof StatusPopup> | null>(null);
+const toastMessage = ref("");
+const isDisabled = ref(false);
 
 const props = defineProps<DescriptionProps>();
 const emit = defineEmits(["hideDescriptionModal"]);
@@ -33,6 +38,12 @@ const save = () => {
   openAIService.saveDescription(save).then((res: AxiosResponse<any, any>) => {
     console.log(res.data);
     removeMultipleKeysStoraged(["item", "prompt"]);
+    toastMessage.value = "Descrição salva com sucesso!";
+    toast.value?.success(toastMessage.value);
+    isDisabled.value = true;
+    setTimeout(() => {
+      emit("hideDescriptionModal");
+    }, 2000);
   });
 };
 
@@ -41,12 +52,13 @@ onMounted(() => {});
 
 <template>
   <overlay>
+    <status-popup :status_message="toastMessage" ref="toast" />
     <description
       :item="props.item"
       :result="props.result"
       class="container_modal"
     >
-      <div class="button_container">
+      <div class="button_container" :class="{ disabled: isDisabled }">
         <main-button @click="save">Sim</main-button>
         <main-button @click="leaveDescription">Cancelar</main-button>
       </div>
@@ -68,6 +80,10 @@ onMounted(() => {});
     display: flex;
     justify-content: flex-end;
     gap: 6px;
+  }
+  .disabled {
+    opacity: 0.5;
+    pointer-events: none;
   }
 
   .item,

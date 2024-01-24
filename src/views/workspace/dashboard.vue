@@ -28,8 +28,6 @@ const descriptionId = ref("");
 
 const toggleDescription = (id: string) => {
   descriptionId.value = id;
-  console.log(descriptionId.value);
-
   showDescription.value = !showDescription.value;
 };
 

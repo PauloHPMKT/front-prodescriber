@@ -11,22 +11,17 @@ const isVisible = ref(false);
 const isActive = ref(false);
 const isError = ref(false);
 
-const open = () => (isVisible.value = true);
-const close = () => (isVisible.value = false);
-
 const success = (message: string) => {
-  open();
+  isVisible.value = true;
   statusNotification(isActive, message);
 };
 
 const error = (message: string) => {
-  open();
+  isVisible.value = true;
   statusNotification(isError, message);
 };
 
 defineExpose({
-  open,
-  close,
   success,
   error,
 });
@@ -55,6 +50,9 @@ defineExpose({
   right: -100%;
   z-index: 2020;
   padding: 20px;
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+  overflow: hidden;
 
   p {
     color: #fff;

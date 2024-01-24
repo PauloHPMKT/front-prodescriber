@@ -8,7 +8,6 @@ import StatusPopup from "../Popup/Status.vue";
 import { DescriptionProps } from "../../types/interfaces";
 import openAIService from "../../services/openai.service";
 import { useHelpers } from "../../composables/useHelpers";
-import { AxiosResponse } from "axios";
 
 const { removeMultipleKeysStoraged } = useHelpers();
 
@@ -35,8 +34,7 @@ const save = () => {
     prompt: localStorage.getItem("prompt"),
     content: props.result,
   };
-  openAIService.saveDescription(save).then((res: AxiosResponse<any, any>) => {
-    console.log(res.data);
+  openAIService.saveDescription(save).then(() => {
     removeMultipleKeysStoraged(["item", "prompt"]);
     toastMessage.value = "Descrição salva com sucesso!";
     toast.value?.success(toastMessage.value);

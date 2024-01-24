@@ -10,20 +10,20 @@ import Default from "../templates/default.vue";
 import StatusPopup from "../components/Popup/Status.vue";
 import Description from "../components/Description/index.vue";
 
-import openAIService from "../services/openai.service";
 import { Breadcrumb } from "../types/interfaces";
 import { useValidation } from "../composables/useValidation";
 import { useOnMounted } from "../composables/useOnMounted";
 import { useOpenai } from "../composables/useOpenai";
+
 import { useAuthStore } from "../store";
-import { useHelpers } from "../composables/useHelpers";
+import { useOpenAIStore } from "../store/openai";
 
 const router = useRouter();
 const authStore = useAuthStore();
+const { createOpenaiDescription, storeDescriptionContent } = useOpenAIStore();
 const { chatRequest } = useOpenai();
 const { minLength, required } = useValidation();
 const { removeFromStorageOnLoad } = useOnMounted();
-const { addMultipleKeysStoraged } = useHelpers();
 
 const showDemo = ref(true);
 const show = ref(false);
@@ -75,7 +75,7 @@ const saveDescription = (token: string | null) => {
   }
 };
 
-const submitDescription = (description: string) => {
+const submitDescription = async (description: string) => {
   const descriptionLength = minLength(description);
   const isEmptyField = required(description);
 
@@ -98,26 +98,32 @@ const submitDescription = (description: string) => {
   const gptRole = authStore.currentUser.role_gpt_generate || "user";
   const request = chatRequest(gptRole, prompt);
 
-  openAIService
-    .createDescription(request)
-    .then((res) => {
-      if (res.status === 200) {
-        result.value = res.data.result.message.content;
-        product.value = description;
-        addMultipleKeysStoraged({ item: product.value, prompt });
-      }
-    })
-    .catch((error: Error) => {
-      if (error) {
-        message.value = "Erro ao gerar descrição!";
-        toast.value?.error(message.value);
-        loading.value = false;
-        showDemo.value = true;
-      }
-    })
-    .finally(() => {
+  try {
+    const generate = await createOpenaiDescription(request);
+    const { data, status } = generate;
+    if (status === 200) {
+      result.value = data.result.message.content;
+      product.value = description;
+
+      const storeContent = {
+        item: product.value,
+        prompt,
+        result: result.value,
+      };
+      console.log(storeContent);
+
+      storeDescriptionContent(storeContent);
+    }
+  } catch (error: Error) {
+    if (error) {
+      message.value = "Erro ao gerar descrição!";
+      toast.value?.error(message.value);
       loading.value = false;
-    });
+      showDemo.value = true;
+    }
+  } finally {
+    loading.value = false;
+  }
 };
 
 onMounted(() => {

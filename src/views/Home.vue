@@ -12,18 +12,23 @@ import Description from "../components/Description/index.vue";
 
 import { Breadcrumb } from "../types/interfaces";
 import { useValidation } from "../composables/useValidation";
-import { useOnMounted } from "../composables/useOnMounted";
 import { useOpenai } from "../composables/useOpenai";
+import { useOnMounted } from "../composables/useOnMounted";
 
 import { useAuthStore } from "../store";
 import { useOpenAIStore } from "../store/openai";
 
 const router = useRouter();
 const authStore = useAuthStore();
-const { createOpenaiDescription, storeDescriptionContent } = useOpenAIStore();
+const {
+  createOpenaiDescription,
+  storeDescriptionContent,
+  cleanStore,
+  descriptionContent,
+} = useOpenAIStore();
 const { chatRequest } = useOpenai();
 const { minLength, required } = useValidation();
-const { removeFromStorageOnLoad } = useOnMounted();
+const { removeStoreOnLoad } = useOnMounted();
 
 const showDemo = ref(true);
 const show = ref(false);
@@ -54,12 +59,12 @@ const triggerActions = (actions: string) => {
       saveDescription(isLogged);
       break;
     case Breadcrumb.Actions.DISLIKE:
-      const description = localStorage.getItem("item");
-      submitDescription(String(description));
+      const description = descriptionContent.item;
+      submitDescription(description);
       break;
     case Breadcrumb.Actions.GENERATE:
       showDemo.value = !showDemo.value;
-      localStorage.removeItem("description");
+      cleanStore();
       break;
     default:
       break;
@@ -104,14 +109,11 @@ const submitDescription = async (description: string) => {
     if (status === 200) {
       result.value = data.result.message.content;
       product.value = description;
-
       const storeContent = {
         item: product.value,
         prompt,
         result: result.value,
       };
-      console.log(storeContent);
-
       storeDescriptionContent(storeContent);
     }
   } catch (error: Error) {
@@ -127,7 +129,7 @@ const submitDescription = async (description: string) => {
 };
 
 onMounted(() => {
-  removeFromStorageOnLoad("description");
+  removeStoreOnLoad(cleanStore());
 });
 </script>
 

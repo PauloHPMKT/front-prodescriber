@@ -1,12 +1,8 @@
 import { useRouter } from "vue-router";
 
 export const useOnMounted = (router?: ReturnType<typeof useRouter>) => {
-  function removeFromStorageOnLoad(item: string) {
-    if (item) {
-      window.addEventListener("load", () => {
-        localStorage.removeItem(item);
-      });
-    }
+  function removeStoreOnLoad(cleanStore: any) {
+    return cleanStore;
   }
 
   function dateTimeFormated(): string {
@@ -35,7 +31,7 @@ export const useOnMounted = (router?: ReturnType<typeof useRouter>) => {
   }
 
   return {
-    removeFromStorageOnLoad,
+    removeStoreOnLoad,
     dateTimeFormated,
     checkBrowserConnection,
   };

@@ -20,7 +20,9 @@ export const useOpenAIStore = defineStore("openai", {
     },
     storeDescriptionContent(content: Openai.ChatResponse) {
       this.$state.descriptionContent = content;
-      console.log(this.$state.descriptionContent);
+    },
+    cleanStore() {
+      this.$state.descriptionContent = {} as Openai.ChatResponse;
     },
   },
 });

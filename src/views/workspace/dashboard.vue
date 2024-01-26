@@ -17,10 +17,9 @@ const { filterResponse } = useHttp();
 const product = ref("");
 const description = ref(router.currentRoute.value.query.description);
 const item = ref(localStorage.getItem("item")!);
-const save_description = ref(null);
 const descriptionModal = ref<typeof CreateDescriptionWorkspace | null>(null);
 const showDescription = ref(false);
-const isDescriptionToSave = ref(false);
+const savedescription = ref<typeof SaveDescription | null>(null);
 const listDescriptions = ref(
   [] as { _id: string; prompt: string; result: string }[]
 );
@@ -36,13 +35,7 @@ const handleSearchProduct = () => {
 };
 
 const showModalWhenDescriptionExists = () => {
-  if (description.value) isDescriptionToSave.value = true;
-};
-
-const hideDescriptionModal = () => {
-  isDescriptionToSave.value = false;
-  localStorage.removeItem("item");
-  router.push({ name: "dashboard", query: {} });
+  if (description.value) savedescription.value?.showModal();
 };
 
 const openCreateNewDescription = () => {
@@ -72,11 +65,9 @@ onMounted(() => {
 <template>
   <div class="dashboard_container">
     <save-description
-      ref="save_description"
-      v-if="isDescriptionToSave"
+      ref="savedescription"
       :item="item"
       :result="String(description)"
-      @hide-description-modal="hideDescriptionModal"
     />
     <create-description-workspace ref="descriptionModal" />
     <div class="inner_header">

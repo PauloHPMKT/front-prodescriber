@@ -11,7 +11,6 @@ export default {
   },
 
   saveDescription: (data: any) => {
-    console.log(data);
     return api.post("/openai/save-response", data);
   },
 };

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted, defineExpose, ref } from "vue";
 import Description from "../Description/index.vue";
 import overlay from "../../templates/overlay.vue";
 import MainButton from "../Button/index.vue";
@@ -9,29 +9,34 @@ import { DescriptionProps } from "../../types/interfaces";
 import openAIService from "../../services/openai.service";
 import { useHelpers } from "../../composables/useHelpers";
 
+import { useOpenAIStore } from "../../store/openai";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+const { descriptionContent, cleanStore } = useOpenAIStore();
 const { removeMultipleKeysStoraged } = useHelpers();
 
 const toast = ref<InstanceType<typeof StatusPopup> | null>(null);
 const toastMessage = ref("");
 const isDisabled = ref(false);
+const hideDescriptionModal = ref(false);
 
 const props = defineProps<DescriptionProps>();
 const emit = defineEmits(["hideDescriptionModal"]);
 
-// const productName = computed(() => {
-//   return `Que ótimo que gostou da descrição para o item:
-//     <strong style="font-weight: bold;">${props.item}</strong>.
-//     Clique em salvar para adicionar a sua lista.
-//   `;
-// });
-
 const leaveDescription = () => {
-  emit("hideDescriptionModal");
+  hideDescriptionModal.value = true;
+  router.push({ name: "dashboard", query: {} });
+  cleanStore();
 };
+
+defineExpose({
+  leaveDescription,
+});
 
 const save = () => {
   const save = {
-    prompt: localStorage.getItem("prompt"),
+    prompt: descriptionContent.prompt,
     content: props.result,
   };
   openAIService.saveDescription(save).then(() => {
@@ -51,11 +56,7 @@ onMounted(() => {});
 <template>
   <overlay>
     <status-popup :status_message="toastMessage" ref="toast" />
-    <description
-      :item="props.item"
-      :result="props.result"
-      class="container_modal"
-    >
+    <description class="container_modal">
       <div class="button_container" :class="{ disabled: isDisabled }">
         <main-button @click="save">Sim</main-button>
         <main-button @click="leaveDescription">Cancelar</main-button>

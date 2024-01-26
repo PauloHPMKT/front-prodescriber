@@ -75,7 +75,6 @@ const saveDescription = (token: string | null) => {
   if (!!token) {
     router.push({ name: "dashboard", query: { description: result.value } });
   } else {
-    localStorage.setItem("result", result.value);
     router.push({ name: "login" });
   }
 };

@@ -18,6 +18,11 @@ export const useOpenAIStore = defineStore("openai", {
       const description = await openaiService.createDescription(request);
       return description;
     },
+    async saveDescription(content: any): Promise<AxiosResponse<any, any>> {
+      console.log(content);
+      const savedContent = await openaiService.saveDescription(content);
+      return savedContent;
+    },
     storeDescriptionContent(content: Openai.ChatResponse) {
       this.$state.descriptionContent = content;
     },

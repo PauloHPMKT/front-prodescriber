@@ -6,11 +6,10 @@ import overlay from "../../templates/overlay.vue";
 import MainButton from "../Button/index.vue";
 import StatusPopup from "../Popup/Status.vue";
 
-import openAIService from "../../services/openai.service";
 import { useOpenAIStore } from "../../store/openai";
 
 const router = useRouter();
-const { descriptionContent, cleanStore } = useOpenAIStore();
+const { descriptionContent, saveDescription, cleanStore } = useOpenAIStore();
 
 const isModalVisible = ref(false);
 
@@ -18,20 +17,27 @@ const toast = ref<InstanceType<typeof StatusPopup> | null>(null);
 const toastMessage = ref("");
 const isDisabled = ref(false);
 
-const save = () => {
-  const saveContent = {
-    prompt: descriptionContent.prompt,
-    content: descriptionContent.result,
-  };
-  openAIService.saveDescription(saveContent).then(() => {
-    cleanStore();
-    toastMessage.value = "Descrição salva com sucesso!";
-    toast.value?.success(toastMessage.value);
-    isDisabled.value = true;
-    setTimeout(() => {
-      hideModal();
-    }, 2000);
-  });
+const save = async () => {
+  try {
+    const saveContent = {
+      prompt: descriptionContent.prompt,
+      content: descriptionContent.result,
+    };
+
+    const { status } = await saveDescription(saveContent);
+    if (status === 201) {
+      cleanStore();
+      toastMessage.value = "Descrição salva com sucesso!";
+      toast.value?.success(toastMessage.value);
+      isDisabled.value = true;
+      setTimeout(() => {
+        hideModal();
+      }, 2000);
+    }
+  } catch (error) {
+    toastMessage.value = "Erro ao salvar descrição!";
+    toast.value?.error(toastMessage.value);
+  }
 };
 
 const hideModal = () => {

@@ -1,65 +1,61 @@
 <script setup lang="ts">
-import { onMounted, defineExpose, ref } from "vue";
+import { defineExpose, ref } from "vue";
+import { useRouter } from "vue-router";
 import Description from "../Description/index.vue";
 import overlay from "../../templates/overlay.vue";
 import MainButton from "../Button/index.vue";
 import StatusPopup from "../Popup/Status.vue";
 
-import { DescriptionProps } from "../../types/interfaces";
 import openAIService from "../../services/openai.service";
-import { useHelpers } from "../../composables/useHelpers";
-
 import { useOpenAIStore } from "../../store/openai";
-import { useRouter } from "vue-router";
 
 const router = useRouter();
 const { descriptionContent, cleanStore } = useOpenAIStore();
-const { removeMultipleKeysStoraged } = useHelpers();
+
+const isModalVisible = ref(false);
 
 const toast = ref<InstanceType<typeof StatusPopup> | null>(null);
 const toastMessage = ref("");
 const isDisabled = ref(false);
-const hideDescriptionModal = ref(false);
-
-const props = defineProps<DescriptionProps>();
-const emit = defineEmits(["hideDescriptionModal"]);
-
-const leaveDescription = () => {
-  hideDescriptionModal.value = true;
-  router.push({ name: "dashboard", query: {} });
-  cleanStore();
-};
-
-defineExpose({
-  leaveDescription,
-});
 
 const save = () => {
-  const save = {
+  const saveContent = {
     prompt: descriptionContent.prompt,
-    content: props.result,
+    content: descriptionContent.result,
   };
-  openAIService.saveDescription(save).then(() => {
-    removeMultipleKeysStoraged(["item", "prompt"]);
+  openAIService.saveDescription(saveContent).then(() => {
+    cleanStore();
     toastMessage.value = "Descrição salva com sucesso!";
     toast.value?.success(toastMessage.value);
     isDisabled.value = true;
     setTimeout(() => {
-      emit("hideDescriptionModal");
+      hideModal();
     }, 2000);
   });
 };
 
-onMounted(() => {});
+const hideModal = () => {
+  isModalVisible.value = false;
+  router.push({ name: "dashboard", query: {} });
+  cleanStore();
+};
+
+const showModal = () => {
+  isModalVisible.value = true;
+};
+
+defineExpose({
+  showModal,
+});
 </script>
 
 <template>
-  <overlay>
+  <overlay v-if="isModalVisible">
     <status-popup :status_message="toastMessage" ref="toast" />
     <description class="container_modal">
       <div class="button_container" :class="{ disabled: isDisabled }">
         <main-button @click="save">Sim</main-button>
-        <main-button @click="leaveDescription">Cancelar</main-button>
+        <main-button @click="hideModal">Cancelar</main-button>
       </div>
     </description>
   </overlay>

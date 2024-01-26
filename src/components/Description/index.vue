@@ -1,17 +1,32 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import DefaultIcon from "../Icons/defaultIcon.vue";
 import StatusPopup from "../Popup/Status.vue";
-import { DescriptionProps } from "../../types/interfaces";
 
+import { useRouter } from "vue-router";
 import { useClipboard } from "../../composables/useClipboard";
+import { useOpenAIStore } from "../../store/openai";
 
+const router = useRouter();
 const { copyToClipboard } = useClipboard();
-
-defineProps<DescriptionProps>();
+const { descriptionContent } = useOpenAIStore();
 
 const toast = ref<InstanceType<typeof StatusPopup> | null>(null);
 const toastMessage = ref("");
+const presentationMessage = ref("");
+
+const productTitle = computed((): string => {
+  const homeText = `O que acha dessa descrição para o item:
+    <strong style="font-weight: bold;">${descriptionContent.item}</strong>.`;
+  const dashboardText = `Que ótimo que gostou da descrição para o item:
+    <strong style="font-weight: bold;">${descriptionContent.item}</strong>.
+    Clique em salvar para adicionar a sua lista.
+  `;
+
+  return router.currentRoute.value.name === "home"
+    ? (presentationMessage.value = homeText)
+    : (presentationMessage.value = dashboardText);
+});
 
 const handleCopyToClipboard = async (result: string) => {
   copyToClipboard(result);
@@ -27,11 +42,11 @@ const handleCopyToClipboard = async (result: string) => {
       :name="'tabler:copy'"
       :title="'Copiar descrição'"
       class="clipboard"
-      @click="handleCopyToClipboard(result)"
+      @click="handleCopyToClipboard(descriptionContent.result)"
     />
-    <p class="item">{{ item }}</p>
+    <p class="item" v-html="productTitle"></p>
     <p style="user-select: none" class="description-content">
-      {{ result }}
+      {{ descriptionContent.result }}
     </p>
     <footer class="card-description-footer">
       <slot></slot>

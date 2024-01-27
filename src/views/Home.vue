@@ -73,11 +73,7 @@ const triggerActions = (actions: string) => {
 };
 
 const saveDescription = (token: string | null) => {
-  if (!!token) {
-    router.push({ name: "dashboard", query: { description: result.value } });
-  } else {
-    router.push({ name: "login" });
-  }
+  !!token ? router.push({ name: "dashboard" }) : router.push({ name: "login" });
 };
 
 const submitDescription = async (description: string) => {

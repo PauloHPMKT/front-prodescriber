@@ -32,7 +32,7 @@ const toHomePage = () => router.push({ name: "home" });
 const submitLogin = async (request: Account.Login) => {
   const isEmptyFields = formsValidation(request);
 
-  if (isEmptyFields) {
+  if (isEmptyFields !== true) {
     toastStore.execute(String(isEmptyFields), false);
     return;
   }

@@ -2,6 +2,7 @@
 import { onMounted } from "vue";
 import { useOnMounted } from "./composables/useOnMounted";
 import { useRouter } from "vue-router";
+import Toast from "./components/Popup/Toast.vue";
 
 const router = useRouter();
 const { checkBrowserConnection } = useOnMounted(router);
@@ -13,6 +14,7 @@ onMounted(() => {
 
 <template>
   <div>
+    <toast />
     <router-view></router-view>
   </div>
 </template>

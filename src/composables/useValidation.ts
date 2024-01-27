@@ -8,7 +8,7 @@ export const useValidation = () => {
 
   function required(val: string): boolean | string {
     if (val === "") {
-      return "Campo de 'Produto' não pode ser vazio!";
+      return "Campo de decrição não pode ser vazio!";
     }
     return true;
   }

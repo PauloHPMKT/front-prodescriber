@@ -1,21 +1,18 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import { Icon } from "@iconify/vue";
-import { useRouter } from "vue-router";
 import MainButton from "../../components/Button/index.vue";
 import BaseInput from "../../components/Inputs/BaseInput.vue";
 import SaveDescription from "../../components/Modals/SaveDescription.vue";
 import CreateDescriptionWorkspace from "../../components/Forms/CreateDescriptionWorkspace.vue";
 import openAIService from "../../services/openai.service";
-import { useHelpers } from "../../composables/useHelpers";
 import { useHttp } from "../../composables/useHttp";
+import { useOpenAIStore } from "../../store/openai";
 
-const router = useRouter();
-const { removeMultipleKeysStoraged } = useHelpers();
+const { descriptionContent } = useOpenAIStore();
 const { filterResponse } = useHttp();
 
 const product = ref("");
-const description = ref(router.currentRoute.value.query.description);
 const descriptionModal = ref<typeof CreateDescriptionWorkspace | null>(null);
 const showDescription = ref(false);
 const savedescription = ref<typeof SaveDescription | null>(null);
@@ -34,7 +31,8 @@ const handleSearchProduct = () => {
 };
 
 const showModalWhenDescriptionExists = () => {
-  if (description.value) savedescription.value?.showModal();
+  const description = descriptionContent.result;
+  description && savedescription.value?.showModal();
 };
 
 const openCreateNewDescription = () => {
@@ -56,7 +54,6 @@ const getListDescriptions = () => {
 
 onMounted(() => {
   showModalWhenDescriptionExists();
-  removeMultipleKeysStoraged(["result"]);
   getListDescriptions();
 });
 </script>

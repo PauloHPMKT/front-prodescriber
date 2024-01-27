@@ -3,13 +3,20 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import Default from "../templates/default.vue";
 import DefaultIcon from "../components/Icons/defaultIcon.vue";
-import logo from "../assets/img/logo_prodescriber.png";
 import FormLogin from "../components/Forms/FormLogin.vue";
+
+import { useValidation } from "../composables/useValidation";
 import { Account } from "../types/account";
+import logo from "../assets/img/logo_prodescriber.png";
+
 import { useAuthStore } from "../store/index";
+import { useToastStore } from "../store/toast";
 
 const authStore = useAuthStore();
+const toastStore = useToastStore();
 const router = useRouter();
+const { formsValidation } = useValidation();
+
 const isTextVisible = ref(false);
 
 const showText = () => {
@@ -23,6 +30,13 @@ const hideText = () => {
 const toHomePage = () => router.push({ name: "home" });
 
 const submitLogin = async (request: Account.Login) => {
+  const isEmptyFields = formsValidation(request);
+
+  if (isEmptyFields) {
+    toastStore.execute(String(isEmptyFields), false);
+    return;
+  }
+
   try {
     const authLogin = await authStore.login(request);
     const { data, status } = authLogin;
@@ -41,10 +55,7 @@ const submitLogin = async (request: Account.Login) => {
         : router.push({ name: "dashboard" });
     }
   } catch (error) {
-    console.log(error);
-    /**
-     * Inserir um toast de erro
-     */
+    toastStore.execute("Erro ao realizar o login!", false);
   }
 };
 </script>

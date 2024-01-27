@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import DefaultIcon from "../Icons/defaultIcon.vue";
-import StatusPopup from "../Popup/Status.vue";
 
 import { useRouter } from "vue-router";
 import { useClipboard } from "../../composables/useClipboard";
+//store
 import { useOpenAIStore } from "../../store/openai";
-
+import { useToastStore } from "../../store/toast";
+//executes
 const router = useRouter();
 const { copyToClipboard } = useClipboard();
+const { execute } = useToastStore();
 const { descriptionContent } = useOpenAIStore();
 
-const toast = ref<InstanceType<typeof StatusPopup> | null>(null);
-const toastMessage = ref("");
 const presentationMessage = ref("");
 
 const productTitle = computed((): string => {
@@ -30,14 +30,12 @@ const productTitle = computed((): string => {
 
 const handleCopyToClipboard = async (result: string) => {
   copyToClipboard(result);
-  toastMessage.value = "Descrição copiada com sucesso!";
-  toast.value?.success(toastMessage.value);
+  execute("Descrição copiada com sucesso!", true);
 };
 </script>
 
 <template>
   <article class="description">
-    <status-popup :status_message="toastMessage" ref="toast" />
     <default-icon
       :name="'tabler:copy'"
       :title="'Copiar descrição'"

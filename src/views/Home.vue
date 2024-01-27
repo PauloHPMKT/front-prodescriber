@@ -1,25 +1,27 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
+//components
 import MainHeader from "../components/Header/index.vue";
 import MainButton from "../components/Button/index.vue";
 import FormDescription from "../components/Forms/FormDescription.vue";
 import LoadSpinner from "../components/Loaders/LoadSpinner.vue";
 import BreadcrumbButtons from "../components/BreadcrumbButtons/index.vue";
 import Default from "../templates/default.vue";
-import StatusPopup from "../components/Popup/Status.vue";
 import Description from "../components/Description/index.vue";
-
+//externals
 import { Breadcrumb } from "../types/interfaces";
 import { useValidation } from "../composables/useValidation";
 import { useOpenai } from "../composables/useOpenai";
 import { useOnMounted } from "../composables/useOnMounted";
-
+//store
 import { useAuthStore } from "../store";
 import { useOpenAIStore } from "../store/openai";
-
+import { useToastStore } from "../store/toast";
+//executes
 const router = useRouter();
 const authStore = useAuthStore();
+const { execute } = useToastStore();
 const {
   createOpenaiDescription,
   storeDescriptionContent,
@@ -36,7 +38,6 @@ const loading = ref(false);
 const product = ref("");
 const result = ref("");
 const message = ref("");
-const toast = ref<InstanceType<typeof StatusPopup> | null>(null);
 const breadcrumbButtons = ref([
   {
     label: "Gostei",
@@ -85,13 +86,13 @@ const submitDescription = async (description: string) => {
 
   if (description === "") {
     message.value = String(isEmptyField);
-    toast.value?.error(message.value);
+    execute(message.value, false);
     return;
   }
 
   if (description.length < 3) {
     message.value = String(descriptionLength);
-    toast.value?.error(message.value);
+    execute(message.value, false);
     return;
   }
 
@@ -118,7 +119,7 @@ const submitDescription = async (description: string) => {
   } catch (error: Error) {
     if (error) {
       message.value = "Erro ao gerar descrição!";
-      toast.value?.error(message.value);
+      execute(message.value, false);
       loading.value = false;
       showDemo.value = true;
     }
@@ -134,7 +135,6 @@ onMounted(() => {
 
 <template>
   <div class="home_view">
-    <status-popup :status_message="message" ref="toast" />
     <main-header />
     <main>
       <default>

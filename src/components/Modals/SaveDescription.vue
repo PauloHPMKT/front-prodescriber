@@ -4,17 +4,15 @@ import { useRouter } from "vue-router";
 import Description from "../Description/index.vue";
 import overlay from "../../templates/overlay.vue";
 import MainButton from "../Button/index.vue";
-import StatusPopup from "../Popup/Status.vue";
 
 import { useOpenAIStore } from "../../store/openai";
+import { useToastStore } from "../../store/toast";
 
 const router = useRouter();
 const { descriptionContent, saveDescription, cleanStore } = useOpenAIStore();
+const { execute } = useToastStore();
 
 const isModalVisible = ref(false);
-
-const toast = ref<InstanceType<typeof StatusPopup> | null>(null);
-const toastMessage = ref("");
 const isDisabled = ref(false);
 
 const save = async () => {
@@ -27,16 +25,14 @@ const save = async () => {
     const { status } = await saveDescription(saveContent);
     if (status === 201) {
       cleanStore();
-      toastMessage.value = "Descrição salva com sucesso!";
-      toast.value?.success(toastMessage.value);
+      execute("Descrição salva com sucesso!", true);
       isDisabled.value = true;
       setTimeout(() => {
         hideModal();
       }, 2000);
     }
   } catch (error) {
-    toastMessage.value = "Erro ao salvar descrição!";
-    toast.value?.error(toastMessage.value);
+    execute("Erro ao salvar descrição!", false);
   }
 };
 
@@ -57,7 +53,6 @@ defineExpose({
 
 <template>
   <overlay v-if="isModalVisible">
-    <status-popup :status_message="toastMessage" ref="toast" />
     <description class="container_modal">
       <div class="button_container" :class="{ disabled: isDisabled }">
         <main-button @click="save">Sim</main-button>

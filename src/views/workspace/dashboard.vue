@@ -16,7 +16,6 @@ const { filterResponse } = useHttp();
 
 const product = ref("");
 const description = ref(router.currentRoute.value.query.description);
-const item = ref(localStorage.getItem("item")!);
 const descriptionModal = ref<typeof CreateDescriptionWorkspace | null>(null);
 const showDescription = ref(false);
 const savedescription = ref<typeof SaveDescription | null>(null);
@@ -64,11 +63,7 @@ onMounted(() => {
 
 <template>
   <div class="dashboard_container">
-    <save-description
-      ref="savedescription"
-      :item="item"
-      :result="String(description)"
-    />
+    <save-description ref="savedescription" />
     <create-description-workspace ref="descriptionModal" />
     <div class="inner_header">
       <h2>Dashboard - Gerenciador de Lista</h2>

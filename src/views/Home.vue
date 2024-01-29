@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
+import { Icon } from "@iconify/vue";
 //components
 import MainHeader from "../components/Header/index.vue";
 import MainButton from "../components/Button/index.vue";
@@ -149,6 +150,7 @@ onMounted(() => {
             <transition name="slide-fade">
               <main-button v-if="show === false" @click="show = !show">
                 Gerar Descrição
+                <Icon :icon="'tabler:wand'" />
               </main-button>
               <form-description v-else @submit="submitDescription" />
             </transition>
@@ -220,6 +222,11 @@ onMounted(() => {
       button {
         position: absolute;
         transform: translate(-50%);
+
+        svg {
+          margin-left: 10px;
+          font-size: 1.2rem;
+        }
       }
 
       .slide-fade-enter-active {

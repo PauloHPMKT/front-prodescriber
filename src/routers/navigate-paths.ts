@@ -14,3 +14,23 @@ export const navigatePaths: NavigatePathsProps[] = [
     description: "Usuários",
   },
 ];
+
+/**
+ *
+ * Adicionar uma rota para criar um
+ * tradutor e reescritor de texto
+ * alem de um encurtador de links (url)
+ * criar uma rota para armazenamento de prompts
+ */
+
+/**
+ * 
+ * 
+ * 
+ * const self: any = this.$refs.profileCard;
+		document.addEventListener("click", (e: Event) => {
+			if (self !== undefined && self.contains(e.target) === false) {
+				this.setProfileCard = false;
+			}
+		});
+ */

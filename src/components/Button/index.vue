@@ -21,5 +21,8 @@ button {
   font-size: 1rem;
   cursor: pointer;
   transition: 0.2s ease-in-out;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

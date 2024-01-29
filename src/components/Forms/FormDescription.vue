@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import { Icon } from "@iconify/vue";
 import MainButton from "../Button/index.vue";
 
 const description = ref("");
@@ -19,7 +20,10 @@ const submit = () => {
         v-model="description"
         placeholder="Insira seu melhor produto"
       />
-      <main-button class="button" type="submit">Gerar descrição</main-button>
+      <main-button class="button" type="submit">
+        Gerar descrição
+        <Icon :icon="'tabler:wand'" />
+      </main-button>
     </div>
   </form>
 </template>
@@ -48,8 +52,13 @@ const submit = () => {
     background: #000;
     color: #fff;
     position: absolute;
-    right: -73px;
+    right: -87px;
     transform: translate(-50%, 2%);
+
+    svg {
+      margin-left: 10px;
+      font-size: 1.2rem;
+    }
   }
 }
 </style>

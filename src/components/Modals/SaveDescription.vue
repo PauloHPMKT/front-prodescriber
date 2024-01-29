@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { defineExpose, ref } from "vue";
-import { useRouter } from "vue-router";
 import Description from "../Description/index.vue";
 import overlay from "../../templates/overlay.vue";
 import MainButton from "../Button/index.vue";
@@ -8,7 +7,6 @@ import MainButton from "../Button/index.vue";
 import { useOpenAIStore } from "../../store/openai";
 import { useToastStore } from "../../store/toast";
 
-const router = useRouter();
 const { descriptionContent, saveDescription, cleanStore } = useOpenAIStore();
 const { execute } = useToastStore();
 
@@ -38,8 +36,7 @@ const save = async () => {
 
 const hideModal = () => {
   isModalVisible.value = false;
-  router.push({ name: "dashboard", query: {} });
-  cleanStore();
+  if (descriptionContent.result) return cleanStore();
 };
 
 const showModal = () => {
@@ -48,6 +45,7 @@ const showModal = () => {
 
 defineExpose({
   showModal,
+  hideModal,
 });
 </script>
 

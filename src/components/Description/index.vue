@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import DefaultIcon from "../Icons/defaultIcon.vue";
 
 import { useRouter } from "vue-router";
@@ -14,6 +14,7 @@ const { execute } = useToastStore();
 const { descriptionContent } = useOpenAIStore();
 
 const presentationMessage = ref("");
+const typewriterText = ref("");
 
 const productTitle = computed((): string => {
   const homeText = `O que acha dessa descrição para o item:
@@ -28,10 +29,25 @@ const productTitle = computed((): string => {
     : (presentationMessage.value = dashboardText);
 });
 
+const typeWriter = (text: string, index: string | number) => {
+  if (typeof index === "number" && index < text.length) {
+    typewriterText.value += text.charAt(index);
+    setTimeout(() => {
+      typeWriter(text, index + 1);
+    }, 30);
+  }
+};
+
 const handleCopyToClipboard = async (result: string) => {
   copyToClipboard(result);
   execute("Descrição copiada com sucesso!", true);
 };
+
+onMounted(() => {
+  if (router.currentRoute.value.name === "dashboard") {
+    return typeWriter(descriptionContent.result, 0);
+  }
+});
 </script>
 
 <template>
@@ -44,7 +60,7 @@ const handleCopyToClipboard = async (result: string) => {
     />
     <p class="item" v-html="productTitle"></p>
     <p style="user-select: none" class="description-content">
-      {{ descriptionContent.result }}
+      {{ typewriterText || descriptionContent.result }}
     </p>
     <footer class="card-description-footer">
       <slot></slot>

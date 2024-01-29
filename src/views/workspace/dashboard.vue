@@ -6,6 +6,7 @@ import BaseInput from "../../components/Inputs/BaseInput.vue";
 import SaveDescription from "../../components/Modals/SaveDescription.vue";
 import CreateDescriptionWorkspace from "../../components/Forms/CreateDescriptionWorkspace.vue";
 import openAIService from "../../services/openai.service";
+import { Openai } from "../../types/openai";
 import { useHttp } from "../../composables/useHttp";
 import { useOpenAIStore } from "../../store/openai";
 
@@ -16,9 +17,7 @@ const product = ref("");
 const descriptionModal = ref<typeof CreateDescriptionWorkspace | null>(null);
 const showDescription = ref(false);
 const savedescription = ref<typeof SaveDescription | null>(null);
-const listDescriptions = ref(
-  [] as { _id: string; prompt: string; result: string }[]
-);
+const listDescriptions = ref([] as Openai.ChatResponse[]);
 const descriptionId = ref("");
 
 const toggleDescription = (id: string) => {
@@ -109,7 +108,7 @@ onMounted(() => {
           <div style="display: flex">
             <div
               class="description_title"
-              @click="toggleDescription(description._id)"
+              @click="toggleDescription(description._id as string)"
             >
               <p>
                 {{ description.prompt }}

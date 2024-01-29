@@ -9,8 +9,9 @@
 <style scoped lang="scss">
 .overlay {
   position: fixed;
-  top: 0;
-  left: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 100%;
   height: 100%;
   z-index: 300;
@@ -18,5 +19,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 }
 </style>

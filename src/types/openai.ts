@@ -9,6 +9,7 @@ export namespace Openai {
   }
 
   export interface ChatResponse {
+    _id?: string;
     item: string;
     prompt: string;
     result: string;

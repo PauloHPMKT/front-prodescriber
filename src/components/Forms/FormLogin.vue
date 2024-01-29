@@ -2,11 +2,11 @@
 import BaseInput from "../Inputs/BaseInput.vue";
 import MainButton from "../Button/index.vue";
 import { ref } from "vue";
-import { Accounts } from "../../types/interfaces";
+import { Account } from "../../types/account";
 
 const emit = defineEmits(["handleLogin"]);
 
-const dataToLogin = ref<Accounts.Login>({
+const dataToLogin = ref<Account.Login>({
   email: "",
   password: "",
 });

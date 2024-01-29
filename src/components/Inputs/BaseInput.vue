@@ -62,7 +62,7 @@ const togglePassword = () => {
   height: 40px;
   border-radius: 6px;
   padding: 5px 10px;
-  box-shadow: -2px 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: -1px 0 5px rgba(0, 0, 0, 0.144);
 
   input {
     width: 95%;

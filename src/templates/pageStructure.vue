@@ -1,17 +1,19 @@
 <script setup lang="ts">
-import { computed, onMounted } from "vue";
-import { Icon } from "@iconify/vue";
+import { computed, onMounted, ref } from "vue";
 import Content from "./content.vue";
 import Sidebar from "../components/Sidebar/index.vue";
 import { useOnMounted } from "../composables/useOnMounted";
 import { useAuthStore } from "../store/index";
 import { useRouter } from "vue-router";
 import { useHelpers } from "../composables/useHelpers";
+import userIcon from "../assets/img/empty-user.jpg";
 
 const router = useRouter();
 const authStore = useAuthStore();
 const { dateTimeFormated } = useOnMounted();
 const { removeMultipleKeysStoraged, truncate, greetings } = useHelpers();
+
+const isCardVisible = ref(false);
 
 const username = computed(() => {
   const currentUser = authStore.$state.currentUser.name;
@@ -21,6 +23,10 @@ const username = computed(() => {
 const greetingsMessage = computed(() => {
   return `${greetings()}, ${username.value}👋`;
 });
+
+const showCardProfile = () => {
+  isCardVisible.value = !isCardVisible.value;
+};
 
 const logout = () => {
   const keys = ["access_token", "auth"];
@@ -43,9 +49,15 @@ onMounted(() => {
           <p>{{ greetingsMessage }}</p>
           <span>{{ dateTimeFormated() }}</span>
         </div>
-        <div class="user_info">
-          <p @click="logout">Sair</p>
-          <Icon icon="tabler:logout" />
+        <div @click="showCardProfile" class="user_info">
+          <img :src="userIcon" alt="Perfil do usuário" />
+        </div>
+        <div class="card_user" v-if="isCardVisible">
+          <p>Meu perfil</p>
+          <div>
+            <p @click="logout">Sair</p>
+            <Icon icon="tabler:logout" />
+          </div>
         </div>
       </header>
       <main>
@@ -73,6 +85,7 @@ onMounted(() => {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      position: relative;
       padding: 10px 20px;
       background-color: #f9f8f9;
       flex: 0 0 10vh;
@@ -94,18 +107,38 @@ onMounted(() => {
 
       .user_info {
         display: flex;
+        font-size: 2rem;
+        background-color: #a3a3a3;
+        border-radius: 100%;
         align-items: center;
         gap: 10px;
-        color: #a3a3a3;
+        color: #ffffff;
+        margin-right: 20px;
         cursor: pointer;
         transition: all 0.3s ease-in-out;
 
-        &:hover {
+        img {
+          width: 50px;
+        }
+
+        /* &:hover {
           background-color: #121212;
           color: #e7e6e8;
           padding: 4px 8px;
           border-radius: 6px;
-        }
+        } */
+      }
+
+      .card_user {
+        position: absolute;
+        right: 50px;
+        top: 65px;
+        z-index: 3000;
+        box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+        background-color: #ffffff;
+        border-radius: 6px;
+        padding: 15px;
+        width: 150px;
       }
     }
 

@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { Icon } from "@iconify/vue";
 import { useRouter } from "vue-router";
 import MainButton from "../Button/index.vue";
 import logo from "../../assets/img/logo_prodescriber.png";
-import { Icon } from "@iconify/vue";
 
 const router = useRouter();
 

@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { Icon } from "@iconify/vue";
 import overlay from "../../templates/overlay.vue";
 import BaseInput from "../Inputs/BaseInput.vue";
 import MainButton from "../Button/index.vue";
 import Description from "../Description/index.vue";
+import BreadcrumbButtons from "../BreadcrumbButtons/index.vue";
 
 import loadingBot from "../../assets/lottie_animations/loadingBot.json";
 
@@ -12,6 +13,7 @@ import { useOpenai } from "../../composables/useOpenai";
 import { useOpenAIStore } from "../../store/openai";
 import { useAuthStore } from "../../store";
 import { Vue3Lottie } from "vue3-lottie";
+import { Breadcrumb } from "../../types/interfaces";
 
 const {
   createOpenaiDescription,
@@ -33,8 +35,38 @@ const dataToGenerate = ref({
   target_audience: "",
   place: "",
 });
+const breadcrumbButtons = ref([
+  {
+    label: "Gostei",
+    action: "like",
+  },
+  {
+    label: "Não gostei",
+    action: "dislike",
+  },
+  {
+    label: "Gerar outra descrição",
+    action: "generate",
+  },
+] as Breadcrumb.Buttons[]);
 
 const emit = defineEmits(["submit"]);
+
+const triggerActions = (actions: string) => {
+  switch (actions) {
+    case "like":
+      console.log("salvar");
+      break;
+    case "dislike":
+      console.log("recriar");
+      break;
+    case "generate":
+      console.log("sair");
+      break;
+    default:
+      return;
+  }
+};
 
 const createDescription = async () => {
   loading.value = true;
@@ -76,6 +108,12 @@ const scrollToTop = () => {
   const formContainer = document.querySelector("#form");
   if (formContainer) formContainer.scrollTop = 0;
 };
+
+onMounted(() => {
+  window.addEventListener("keydown", (e: KeyboardEvent) => {
+    if (e.key === "Escape") closeModal();
+  });
+});
 
 defineExpose({
   openModal,
@@ -179,9 +217,10 @@ defineExpose({
           </div>
           <div v-else>
             <description>
-              <button>Salvar</button>
-              <button>Gerar Nova descrição</button>
-              <button>Sair</button>
+              <breadcrumb-buttons
+                :buttons="breadcrumbButtons"
+                @actions="triggerActions"
+              />
             </description>
           </div>
         </div>

@@ -75,6 +75,7 @@ onMounted(() => {
   border-radius: 8px;
   background: #fff;
   position: relative;
+  max-height: 80%;
 
   .clipboard {
     border-radius: 6px;
@@ -99,6 +100,8 @@ onMounted(() => {
   .description-content {
     color: #121212;
     margin-bottom: 20px;
+    max-height: 200px;
+    overflow: auto;
   }
 
   .card-description-footer {

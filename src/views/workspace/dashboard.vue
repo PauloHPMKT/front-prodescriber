@@ -5,10 +5,12 @@ import MainButton from "../../components/Button/index.vue";
 import BaseInput from "../../components/Inputs/BaseInput.vue";
 import SaveDescription from "../../components/Modals/SaveDescription.vue";
 import CreateDescriptionWorkspace from "../../components/Forms/CreateDescriptionWorkspace.vue";
+import Services from "../../components/Service/index.vue";
 import openAIService from "../../services/openai.service";
 import { Openai } from "../../types/openai";
 import { useHttp } from "../../composables/useHttp";
 import { useOpenAIStore } from "../../store/openai";
+import { navigationServices } from "../../composables/useOptions";
 
 const { descriptionContent } = useOpenAIStore();
 const { filterResponse } = useHttp();
@@ -102,8 +104,19 @@ onMounted(() => {
         </main-button>
       </div>
     </div>
+    <div>
+      <h2>Ferramentas mais populares</h2>
+      <div class="flex items-center gap-3 flex-wrap mb-8 mt-5">
+        <services
+          v-for="service in navigationServices"
+          :key="service.id"
+          v-bind="service"
+        />
+      </div>
+    </div>
     <div class="description_container">
-      <ul>
+      <h2>Descrições mais recentes</h2>
+      <ul class="mt-5">
         <li v-for="description in listDescriptions" :key="description._id">
           <div style="display: flex">
             <div

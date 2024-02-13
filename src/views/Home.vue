@@ -148,7 +148,11 @@ onMounted(() => {
           </p>
           <div id="demo" v-if="showDemo">
             <transition name="slide-fade">
-              <main-button v-if="show === false" @click="show = !show">
+              <main-button
+                v-if="show === false"
+                @click="show = !show"
+                class="bg-slate-100 text-gray-950"
+              >
                 Gerar Descrição
                 <Icon :icon="'tabler:wand'" />
               </main-button>

@@ -46,4 +46,5 @@ export interface NavigatePathsProps {
   router: string;
   icon: string;
   description: string;
+  content: string;
 }

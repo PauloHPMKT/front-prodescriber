@@ -15,12 +15,10 @@ export const useAuthStore = defineStore("auth", {
     },
     async getMe(): Promise<User> {
       const { data } = await userService.me();
-      console.log(data, "get me");
       return data;
     },
     getCurrentUser(user: User) {
       this.$state.currentUser = user;
-      console.log(this.$state.currentUser);
     },
     logout() {
       this.$state.currentUser = {} as User;

@@ -6,12 +6,14 @@ export const navigatePaths: NavigatePathsProps[] = [
     router: "/app/dashboard",
     icon: "chart-combo-stacked",
     description: "Dashboard",
+    content: "Dashboard",
   },
   {
     id: 1,
-    router: "/app/users",
+    router: "/app/gen-descriptions",
     icon: "user-multiple",
-    description: "Usuários",
+    description: "Gerador de Descrições",
+    content: "Usuários",
   },
 ];
 

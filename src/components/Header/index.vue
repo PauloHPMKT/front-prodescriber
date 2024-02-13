@@ -20,7 +20,7 @@ const toLogin = () => {
       <img :src="logo" alt="Logo ProDescriber" />
     </div>
     <div>
-      <main-button @action="toLogin">
+      <main-button class="bg-slate-100 text-gray-950" @action="toLogin">
         Acesse seu workspace
         <Icon icon="tabler:user-up" />
       </main-button>

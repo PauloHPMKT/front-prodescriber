@@ -4,6 +4,7 @@ import { createPinia } from "pinia";
 import piniaPluginPersistedState from "pinia-plugin-persistedstate";
 
 import "./assets/styles/main.scss";
+import "./assets/styles/index.css";
 import router from "./routers";
 import Vue3Lottie from "vue3-lottie";
 

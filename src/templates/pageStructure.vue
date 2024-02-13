@@ -16,7 +16,7 @@ const { removeMultipleKeysStoraged, truncate, greetings } = useHelpers();
 const isCardVisible = ref(false);
 
 const username = computed(() => {
-  const currentUser = authStore.$state.currentUser.name;
+  const currentUser = authStore.$state.currentUser.username;
   return truncate(currentUser!);
 });
 
@@ -60,10 +60,9 @@ onMounted(() => {
           </div>
         </div>
       </header>
-      <main>
+      <main class="py-2">
         <Content />
       </main>
-      <footer>footer</footer>
     </div>
   </div>
 </template>
@@ -73,7 +72,7 @@ onMounted(() => {
   display: flex;
 
   .container {
-    width: 85%;
+    max-width: 100%;
     background-color: #e7e6e8;
     color: #121212;
     height: 100vh;
@@ -143,9 +142,9 @@ onMounted(() => {
     }
 
     main {
-      margin: 0 90px;
+      margin: 0 40px;
       overflow: hidden;
-      height: 82vh;
+      //height: 88vh;
     }
 
     footer {

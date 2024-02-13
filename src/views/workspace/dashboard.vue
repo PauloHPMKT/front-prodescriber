@@ -5,7 +5,7 @@ import MainButton from "../../components/Button/index.vue";
 import BaseInput from "../../components/Inputs/BaseInput.vue";
 import SaveDescription from "../../components/Modals/SaveDescription.vue";
 import CreateDescriptionWorkspace from "../../components/Forms/CreateDescriptionWorkspace.vue";
-import Services from "../../components/Service/index.vue";
+import ToolServices from "../../components/ToolService/index.vue";
 import openAIService from "../../services/openai.service";
 import { Openai } from "../../types/openai";
 import { useHttp } from "../../composables/useHttp";
@@ -48,8 +48,8 @@ const getListDescriptions = () => {
   });
   openAIService.listDescriptions(config).then((response) => {
     const { data } = response;
-    listDescriptions.value = data;
-    console.log(listDescriptions.value);
+    const renderLastFiveDescriptions = data.reverse().slice(0, 5);
+    listDescriptions.value = renderLastFiveDescriptions;
   });
 };
 
@@ -107,7 +107,7 @@ onMounted(() => {
     <div>
       <h2>Ferramentas mais populares</h2>
       <div class="flex items-center gap-3 flex-wrap mb-8 mt-5">
-        <services
+        <tool-services
           v-for="service in navigationServices"
           :key="service.id"
           v-bind="service"
@@ -145,8 +145,9 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .dashboard_container {
-  height: 80vh;
-  overflow: hidden;
+  height: 100%;
+  overflow-y: auto;
+  padding-right: 30px;
 
   .inner_header {
     display: flex;
@@ -190,14 +191,13 @@ onMounted(() => {
   .description_container {
     background-color: #e7e6e8;
     height: 75%;
-    overflow: auto;
     border-radius: 4px;
 
     ul {
+      overflow: auto;
       display: flex;
       flex-direction: column;
       gap: 6px;
-      height: 30px;
 
       li {
         background-color: #ffffff;

@@ -9,8 +9,8 @@ import Login from "../views/Login.vue";
 import NotFoundPage from "../views/NotFoundPage.vue";
 import Dashboard from "../views/workspace/dashboard.vue";
 import pageStructure from "../templates/pageStructure.vue";
-import usersVue from "../views/workspace/users.vue";
 import ConnectionDown from "../views/ConnectionDown.vue";
+import genDescription from "../views/workspace/genDescription.vue";
 
 const authGuard =
   () => (to: RouteLocation, from: RouteLocation, next: NavigationGuardNext) => {
@@ -48,9 +48,9 @@ const router = createRouter({
           props: (router) => ({ description: router.query.description }),
         },
         {
-          path: "users",
-          name: "users",
-          component: usersVue,
+          path: "gen-descriptions",
+          name: "description",
+          component: genDescription,
         },
       ],
     },

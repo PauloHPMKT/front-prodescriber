@@ -17,6 +17,7 @@ const submit = () => {
     <div class="base_input">
       <input
         type="text"
+        class="text-black"
         v-model="description"
         placeholder="Insira seu melhor produto"
       />

@@ -44,7 +44,7 @@ const handleCopyToClipboard = async (result: string) => {
 };
 
 onMounted(() => {
-  if (router.currentRoute.value.name === "dashboard") {
+  if (router.currentRoute.value.name === "description") {
     return typeWriter(descriptionContent.result, 0);
   }
 });

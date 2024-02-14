@@ -71,7 +71,7 @@ const triggerActions = (actions: string) => {
 const createDescription = async () => {
   loading.value = true;
   const prompt = `Gere uma descrição resumida e eficiente, SEO-friendly para o produto: ${dataToGenerate.value.product_name}.`;
-  const gptRole = authStore.currentUser.role_gpt_generate || "user";
+  const gptRole = authStore.currentUser.role_system || "user";
   const request = chatRequest(gptRole, prompt);
   /**
    *
@@ -216,12 +216,13 @@ defineExpose({
             <h5>Que ótimo! vou gerar a melhor descrição para você!</h5>
           </div>
           <div v-else>
-            <description>
+            {{ result }}
+            <!-- <description>
               <breadcrumb-buttons
                 :buttons="breadcrumbButtons"
                 @actions="triggerActions"
               />
-            </description>
+            </description> -->
           </div>
         </div>
       </div>

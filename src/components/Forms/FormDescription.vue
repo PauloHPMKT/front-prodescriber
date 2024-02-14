@@ -34,7 +34,7 @@ const submit = () => {
   background: #fff;
   width: 600px;
   border: 1px solid #fff;
-  border-radius: 8px;
+  border-radius: 20px;
   text-align: start;
   margin: 0 auto;
   padding: 0 15px;
@@ -50,10 +50,11 @@ const submit = () => {
   }
 
   .button {
-    background: #000;
+    background-image: linear-gradient(45deg, #0c0c0c, #0d0c0c);
     color: #fff;
     position: absolute;
-    right: -87px;
+    top: 2.4px;
+    right: -76px;
     transform: translate(-50%, 2%);
 
     svg {

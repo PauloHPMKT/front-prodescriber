@@ -14,9 +14,8 @@ const action = () => {
 
 <style scoped lang="scss">
 button {
-  padding: 0 16px;
-  height: 40px;
-  border-radius: 6px;
+  padding: 5px 10px;
+  border-radius: 20px;
   border: 1px solid transparent;
   font-size: 1rem;
   cursor: pointer;

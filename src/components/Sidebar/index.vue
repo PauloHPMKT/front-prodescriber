@@ -11,7 +11,7 @@ const navigateToDashboard = () => {
 </script>
 
 <template>
-  <aside class="w-[18%] px-3 bg-dark-1000 min-h-screen">
+  <aside class="w-[20%] px-3 bg-dark-1000 min-h-screen fixed z-10">
     <div @click="navigateToDashboard" class="image_container">
       <img :src="logo" alt="Logo ProDescriber" />
     </div>

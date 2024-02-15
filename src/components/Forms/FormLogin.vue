@@ -29,8 +29,29 @@ const handleLogin = () => {
       :placeholder="'Senha'"
       :hide-password-revealler="true"
     />
+    <label
+      for="connect"
+      style="margin-top: 10px; display: flex; font-size: 0.8rem"
+    >
+      <input
+        type="checkbox"
+        id="connect"
+        style="
+          outline: none;
+          display: inline-block;
+          width: 15px;
+          height: 15px;
+          background-color: #ccc;
+          border-radius: 6px;
+          margin-right: 7px;
+        "
+      />
+      Mantenha-me conectado
+    </label>
     <div style="margin-top: 30px; text-align: center">
-      <main-button type="submit">Acessar workspace</main-button>
+      <main-button class="btn_button text-white" type="submit"
+        >Acessar workspace</main-button
+      >
     </div>
   </form>
 </template>
@@ -41,5 +62,18 @@ form {
   flex-direction: column;
   color: #0d0d0d;
   gap: 8px;
+
+  .btn_button {
+    border: 1px solid #c5c5c51c;
+    background-image: linear-gradient(45deg, #202020, #292727);
+    transition: all 0.3s ease-out;
+    padding-top: 7px;
+    padding-bottom: 7px;
+
+    &:hover {
+      filter: drop-shadow(0 0 0.4rem #c5c5c5);
+      cursor: pointer;
+    }
+  }
 }
 </style>

@@ -72,7 +72,7 @@ const submitLogin = async (request: Account.Login) => {
       <p :class="{ hidden_text: isTextVisible }">voltar para a home</p>
     </div>
     <div class="banner_bg"></div>
-    <div class="login_area">
+    <div class="login_area shadow-lg">
       <figure>
         <img :src="logo" alt="Logo ProDescriber" />
         <figcaption>
@@ -86,13 +86,14 @@ const submitLogin = async (request: Account.Login) => {
 
 <style scoped lang="scss">
 .banner_bg {
-  width: 100%;
-  height: 50%;
+  width: 50%;
+  height: 70%;
   background-image: url("../assets/img/dashed_bg.svg");
   background-size: 100px;
   position: absolute;
   top: 0;
-  left: 0;
+  left: 50%;
+  transform: translate(-50%);
   filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg)
     brightness(1000%);
   z-index: -1;
@@ -109,10 +110,12 @@ const submitLogin = async (request: Account.Login) => {
     right: 20px;
     display: flex;
     align-items: center;
-    background-color: #fff;
+    border: 1px solid #c5c5c51c;
+    background-image: linear-gradient(45deg, #202020, #292727);
+    transition: all 0.3s ease-out;
     border-radius: 20px;
     padding: 10px;
-    color: #0d0d0d;
+    color: #fff;
     cursor: pointer;
     overflow: hidden;
     transition: width 0.3s ease;
@@ -144,10 +147,11 @@ const submitLogin = async (request: Account.Login) => {
       visibility: visible;
       transition: opacity 0.3s ease;
       right: 10%;
+      color: #fff;
     }
   }
   .login_area {
-    background-color: #a3a3a3;
+    background-image: linear-gradient(45deg, #323232, #4d4b4b);
     width: 40%;
     padding: 50px;
     border-radius: 6px;

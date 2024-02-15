@@ -12,7 +12,7 @@ const isRouteActive = (route: string) => {
 
 <template>
   <nav>
-    <ul>
+    <ul class="py-3">
       <li
         v-for="link in navigatePaths"
         :key="link.id"
@@ -35,15 +35,14 @@ nav {
     li {
       margin: 3px 0;
       transition: 0.3s ease-in-out;
-      border-top-left-radius: 8px;
-      border-bottom-left-radius: 8px;
+      border-radius: 8px;
       font-size: 1rem;
 
       a {
         display: flex;
         justify-content: flex-start;
         align-items: center;
-        padding: 15px;
+        padding: 12px 16px;
 
         svg {
           margin-right: 10px;
@@ -53,6 +52,12 @@ nav {
       &.active {
         background-color: #e7e6e8;
         color: #121212;
+      }
+
+      &:hover:not(.active) {
+        background-color: #2d2d2da3;
+        color: #fff;
+        cursor: pointer;
       }
     }
   }

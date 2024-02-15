@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watchEffect } from "vue";
 import { Icon } from "@iconify/vue";
-import MainButton from "../../components/Button/index.vue";
-import BaseInput from "../../components/Inputs/BaseInput.vue";
+import { useRouter } from "vue-router";
 import SaveDescription from "../../components/Modals/SaveDescription.vue";
 import CreateDescriptionWorkspace from "../../components/Forms/CreateDescriptionWorkspace.vue";
 import ToolServices from "../../components/ToolService/index.vue";
@@ -11,11 +10,16 @@ import { Openai } from "../../types/openai";
 import { useHttp } from "../../composables/useHttp";
 import { useOpenAIStore } from "../../store/openai";
 import { navigationServices } from "../../composables/useOptions";
+import { navigatePaths } from "../../routers/navigate-paths";
+
+const router = useRouter();
 
 const { descriptionContent } = useOpenAIStore();
 const { filterResponse } = useHttp();
 
-const product = ref("");
+//const product = ref("");
+const previousRouteName = ref("");
+const previousRoutePath = ref(router.options.history.state.back);
 const descriptionModal = ref<typeof CreateDescriptionWorkspace | null>(null);
 const showDescription = ref(false);
 const savedescription = ref<typeof SaveDescription | null>(null);
@@ -27,17 +31,9 @@ const toggleDescription = (id: string) => {
   showDescription.value = !showDescription.value;
 };
 
-const handleSearchProduct = () => {
-  console.log("Encontrou o produto!", product.value);
-};
-
 const showModalWhenDescriptionExists = () => {
   const description = descriptionContent.result;
   description && savedescription.value?.showModal();
-};
-
-const openCreateNewDescription = () => {
-  descriptionModal.value?.openModal();
 };
 
 const getListDescriptions = () => {
@@ -53,6 +49,28 @@ const getListDescriptions = () => {
   });
 };
 
+const redirectTo = () => {
+  if (typeof previousRoutePath.value === "string") {
+    router.push({ path: previousRoutePath.value });
+  }
+};
+
+watchEffect(() => {
+  if (previousRoutePath) {
+    const matchedRoute = navigatePaths.find(
+      (route) => route.router === previousRoutePath.value
+    );
+    if (matchedRoute) {
+      previousRouteName.value = matchedRoute.description;
+      localStorage.setItem("previous_route", matchedRoute.description);
+    } else {
+      previousRouteName.value = localStorage.getItem(
+        "previous_route"
+      ) as string;
+    }
+  }
+});
+
 onMounted(() => {
   showModalWhenDescriptionExists();
   getListDescriptions();
@@ -63,49 +81,20 @@ onMounted(() => {
   <div class="dashboard_container">
     <save-description ref="savedescription" />
     <create-description-workspace ref="descriptionModal" />
-    <div class="inner_header">
-      <h2>Dashboard - Gerenciador de Lista</h2>
-      <div class="toolbar">
-        <base-input
-          :placeholder="'Procure um produto'"
-          :icon="true"
-          v-model="product"
-          @action="handleSearchProduct"
-        />
-        <div class="data_select">
-          <div
-            style="
-              padding: 5px;
-              background-color: #e7e6e8;
-              border-radius: 6px;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-            "
-          >
-            <Icon icon="tabler:chevron-down" />
-          </div>
-          <span style="font-weight: 600; margin: 5px">Hoje</span>
-          <div
-            style="
-              padding: 5px;
-              border-radius: 6px;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-            "
-          >
-            <Icon icon="tabler:menu" />
-          </div>
-        </div>
-        <main-button class="config_button" @click="openCreateNewDescription">
-          Criar uma nova Descrição
-          <Icon icon="tabler:plus" />
-        </main-button>
+    <div class="inner_header border-b-2 border-slate-300 pb-[20px]">
+      <h2>IA Workflows</h2>
+      <div class="flex items-center">
+        <Icon icon="iconamoon:arrow-bottom-left-6-circle-bold" class="mr-2" />
+        <p class="text-neutral-900 font-semibold text-lg">
+          Acessada recentemente:
+          <span class="underline cursor-pointer" @click="redirectTo">{{
+            previousRouteName
+          }}</span>
+        </p>
       </div>
     </div>
-    <div>
-      <h2>Ferramentas mais populares</h2>
+    <div class="mt-4">
+      <p>IA Workflows recomendados para o seu plano</p>
       <div class="flex items-center gap-3 flex-wrap mb-8 mt-5">
         <tool-services
           v-for="service in navigationServices"
@@ -115,7 +104,64 @@ onMounted(() => {
       </div>
     </div>
     <div class="description_container">
-      <h2>Descrições mais recentes</h2>
+      <p>Ultimas descrições geradas</p>
+      <ul class="mt-5">
+        <li>
+          <div style="display: flex">
+            <div class="description_title">
+              <p>description.prompt</p>
+            </div>
+            <div class="icon">
+              <Icon icon="tabler:dots-vertical" />
+            </div>
+          </div>
+          <div v-if="false" class="description">description.result</div>
+        </li>
+        <li>
+          <div style="display: flex">
+            <div class="description_title">
+              <p>description.prompt</p>
+            </div>
+            <div class="icon">
+              <Icon icon="tabler:dots-vertical" />
+            </div>
+          </div>
+          <div v-if="false" class="description">description.result</div>
+        </li>
+        <li>
+          <div style="display: flex">
+            <div class="description_title">
+              <p>description.prompt</p>
+            </div>
+            <div class="icon">
+              <Icon icon="tabler:dots-vertical" />
+            </div>
+          </div>
+          <div v-if="false" class="description">description.result</div>
+        </li>
+        <li>
+          <div style="display: flex">
+            <div class="description_title">
+              <p>description.prompt</p>
+            </div>
+            <div class="icon">
+              <Icon icon="tabler:dots-vertical" />
+            </div>
+          </div>
+          <div v-if="false" class="description">description.result</div>
+        </li>
+        <li>
+          <div style="display: flex">
+            <div class="description_title">
+              <p>description.prompt</p>
+            </div>
+            <div class="icon">
+              <Icon icon="tabler:dots-vertical" />
+            </div>
+          </div>
+          <div v-if="false" class="description">description.result</div>
+        </li>
+      </ul>
       <ul class="mt-5">
         <li v-for="description in listDescriptions" :key="description._id">
           <div style="display: flex">
@@ -147,17 +193,14 @@ onMounted(() => {
 .dashboard_container {
   height: 100%;
   overflow-y: auto;
-  padding-right: 30px;
 
   .inner_header {
     display: flex;
-    flex: 1;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    align-items: start;
     margin: 20px 0;
 
     h2 {
-      margin: 30px 0;
       font-weight: 600;
       font-size: 1.5rem;
     }

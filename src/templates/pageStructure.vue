@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Icon } from "@iconify/vue";
 import { computed, onMounted, ref } from "vue";
 import Content from "./content.vue";
 import Sidebar from "../components/Sidebar/index.vue";
@@ -6,12 +7,12 @@ import { useOnMounted } from "../composables/useOnMounted";
 import { useAuthStore } from "../store/index";
 import { useRouter } from "vue-router";
 import { useHelpers } from "../composables/useHelpers";
-import userIcon from "../assets/img/empty-user.jpg";
 
 const router = useRouter();
 const authStore = useAuthStore();
 const { dateTimeFormated } = useOnMounted();
-const { removeMultipleKeysStoraged, truncate, greetings } = useHelpers();
+const { removeMultipleKeysStoraged, truncate, truncateText, greetings } =
+  useHelpers();
 
 const isCardVisible = ref(false);
 
@@ -28,6 +29,10 @@ const showCardProfile = () => {
   isCardVisible.value = !isCardVisible.value;
 };
 
+const redirectToProfile = () => {
+  alert("Aqui vai para o perfil do usuario");
+};
+
 const logout = () => {
   const keys = ["access_token", "auth"];
   removeMultipleKeysStoraged(keys);
@@ -41,21 +46,34 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="structure">
+  <div class="wrapper">
     <sidebar />
-    <div class="container">
+    <div class="container bg-secondary-200">
       <header class="user_header">
         <div class="greetings">
           <p>{{ greetingsMessage }}</p>
           <span>{{ dateTimeFormated() }}</span>
         </div>
-        <div @click="showCardProfile" class="user_info">
-          <img :src="userIcon" alt="Perfil do usuário" />
+        <div @click="showCardProfile" class="user_info bg-red-500">
+          <Icon icon="teenyicons:user-circle-solid" />
         </div>
         <div class="card_user" v-if="isCardVisible">
-          <p>Meu perfil</p>
-          <div>
-            <p @click="logout">Sair</p>
+          <div class="pb-[15px] border-b-2">
+            <p class="text-zinc-950">
+              {{ truncateText(String(authStore.$state.currentUser.email)) }}
+            </p>
+          </div>
+          <p
+            @click="redirectToProfile"
+            class="py-2 hover:bg-slate-100 cursor-pointer transition rounded-md text-zinc-950"
+          >
+            Meu perfil
+          </p>
+          <div
+            @click="logout"
+            class="py-2 flex items-center cursor-pointer hover:bg-slate-100 transition rounded-md"
+          >
+            <p class="pr-4 text-zinc-950">Sair</p>
             <Icon icon="tabler:logout" />
           </div>
         </div>
@@ -68,34 +86,35 @@ onMounted(() => {
 </template>
 
 <style scoped lang="scss">
-.structure {
+.wrapper {
   display: flex;
+  max-width: 3000px;
+  margin: 0 auto;
+  min-height: 100vh;
 
   .container {
-    max-width: 100%;
-    background-color: #e7e6e8;
     color: #121212;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
+    max-width: 100%;
+    padding-left: 20%;
 
     .user_header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      position: relative;
+      flex: 0 0 10vh;
+      position: sticky;
+      left: 0;
+      top: 0;
       padding: 10px 20px;
       background-color: #f9f8f9;
-      flex: 0 0 10vh;
 
       .greetings {
         display: flex;
         flex-direction: column;
 
         p {
-          color: #121212;
           font-weight: 600;
+          color: #121212;
         }
 
         span {
@@ -107,19 +126,18 @@ onMounted(() => {
       .user_info {
         display: flex;
         font-size: 2rem;
-        background-color: #a3a3a3;
+        background-color: #e5e5e5;
         border-radius: 100%;
         align-items: center;
         gap: 10px;
-        color: #ffffff;
+        color: #aeaeae;
         margin-right: 20px;
         cursor: pointer;
         transition: all 0.3s ease-in-out;
 
-        img {
-          width: 50px;
+        svg {
+          width: 100%;
         }
-
         /* &:hover {
           background-color: #121212;
           color: #e7e6e8;
@@ -137,13 +155,11 @@ onMounted(() => {
         background-color: #ffffff;
         border-radius: 6px;
         padding: 15px;
-        width: 150px;
       }
     }
 
     main {
-      margin: 0 40px;
-      overflow: hidden;
+      padding: 0 40px;
       //height: 88vh;
     }
 

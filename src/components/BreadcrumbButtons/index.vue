@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Icon } from "@iconify/vue";
 import MainButton from "../Button/index.vue";
 import type { Breadcrumb } from "../../types/interfaces";
 
@@ -19,8 +20,10 @@ const actions = (prop: string) => {
       v-for="(button, index) in props.buttons"
       :key="index"
       @click="actions(button.action)"
+      class="bg-slate-800 text-slate-400"
     >
       {{ button.label }}
+      <Icon :icon="`iconamoon:${button.icon}`" class="ms-2" />
     </main-button>
   </div>
 </template>

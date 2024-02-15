@@ -43,14 +43,17 @@ const breadcrumbButtons = ref([
   {
     label: "Gostei",
     action: "like",
+    icon: "like-light",
   },
   {
     label: "Não gostei",
     action: "dislike",
+    icon: "player-next-light",
   },
   {
     label: "Gerar outra descrição",
     action: "generate",
+    icon: "restart",
   },
 ] as Breadcrumb.Buttons[]);
 
@@ -186,7 +189,7 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .home_view {
-  padding-top: 50px;
+  padding-top: 30px;
   position: absolute;
   width: 100%;
 

@@ -1,7 +1,7 @@
 export namespace Openai {
   export interface Message {
-    role: string;
     content: string;
+    role: string;
   }
 
   export interface ChatRequest {

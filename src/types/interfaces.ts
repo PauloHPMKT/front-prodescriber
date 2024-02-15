@@ -2,6 +2,7 @@ export namespace Breadcrumb {
   export interface Buttons {
     label: string;
     action: string;
+    icon: string;
   }
 
   export enum Actions {

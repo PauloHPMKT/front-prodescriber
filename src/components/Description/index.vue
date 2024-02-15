@@ -43,29 +43,40 @@ const handleCopyToClipboard = async (result: string) => {
   execute("Descrição copiada com sucesso!", true);
 };
 
+const processTypeWriter = () => {
+  const routesToExecute = ["description", "home"];
+  router.options.routes.forEach((route) => {
+    if (routesToExecute.includes(route.name as string)) {
+      return typeWriter(descriptionContent.result, 0);
+    }
+  });
+};
+
 onMounted(() => {
-  if (router.currentRoute.value.name === "description") {
-    return typeWriter(descriptionContent.result, 0);
-  }
+  processTypeWriter();
 });
 </script>
 
 <template>
-  <article class="description">
+  <div class="description bg-gray-1000 shadow-lg">
     <default-icon
       :name="'tabler:copy'"
       :title="'Copiar descrição'"
-      class="clipboard"
+      class="clipboard text-stone-600"
       @click="handleCopyToClipboard(descriptionContent.result)"
     />
-    <p class="item" v-html="productTitle"></p>
-    <p style="user-select: none" class="description-content">
-      {{ typewriterText || descriptionContent.result }}
-    </p>
+    <header class="border-b border-gray-1050">
+      <p class="item text-white" v-html="productTitle"></p>
+    </header>
+    <article class="mt-7">
+      <p style="user-select: none" class="description-content text-white">
+        {{ typewriterText || descriptionContent.result }}
+      </p>
+    </article>
     <footer class="card-description-footer">
       <slot></slot>
     </footer>
-  </article>
+  </div>
 </template>
 
 <style scoped lang="scss">
@@ -73,16 +84,16 @@ onMounted(() => {
   margin: 30px;
   padding: 30px;
   border-radius: 8px;
-  background: #fff;
+  border: 1px solid #6767671a;
   position: relative;
   max-height: 80%;
+  color: #fff;
 
   .clipboard {
     border-radius: 6px;
     width: 36px;
     height: 36px;
     padding: 5px;
-    color: #121212;
     font-size: 1.5rem;
     position: absolute;
     top: 20px;
@@ -98,8 +109,7 @@ onMounted(() => {
 
   .item,
   .description-content {
-    color: #121212;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     max-height: 200px;
     overflow: auto;
   }

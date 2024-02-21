@@ -15,6 +15,13 @@ export const navigatePaths: NavigatePathsProps[] = [
     description: "Gerador de Descrições",
     content: "Usuários",
   },
+  {
+    id: 1,
+    router: "/app/gen-list-descriptions",
+    icon: "list",
+    description: "Lista de descrições",
+    content: "Descrições",
+  },
 ];
 
 /**

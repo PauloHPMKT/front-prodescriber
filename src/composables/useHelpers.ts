@@ -20,6 +20,10 @@ export const useHelpers = () => {
     return text && text.split(" ").slice(0, 2).toString().replace(",", " ");
   }
 
+  function truncateText(text: string): string {
+    return text && text.length > 20 ? `${text.substring(0, 20)}...` : text;
+  }
+
   function greetings(): string {
     const date = new Date();
     const hour = date.getHours();
@@ -36,6 +40,7 @@ export const useHelpers = () => {
     removeMultipleKeysStoraged,
     addMultipleKeysStoraged,
     truncate,
+    truncateText,
     greetings,
   };
 };

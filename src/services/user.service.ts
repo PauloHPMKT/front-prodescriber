@@ -9,4 +9,8 @@ export default {
   me: () => {
     return api.get("/app/me");
   },
+
+  updateUserInfo: (id: string, data: Account.Update) => {
+    return api.patch(`/users/update/${id}`, data);
+  },
 };

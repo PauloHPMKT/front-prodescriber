@@ -1,8 +1,9 @@
 import { AxiosRequestConfig } from "axios";
+import { Openai } from "../types/openai";
 import { api } from "./api";
 
 export default {
-  createDescription: (messages: object) => {
+  createDescription: (messages: Openai.ChatRequest) => {
     return api.post("/openai/chat", messages);
   },
 

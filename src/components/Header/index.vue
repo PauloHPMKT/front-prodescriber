@@ -20,7 +20,7 @@ const toLogin = () => {
       <img :src="logo" alt="Logo ProDescriber" />
     </div>
     <div>
-      <main-button class="bg-button text-gray-950" @action="toLogin">
+      <main-button class="bg-button text-white" @action="toLogin">
         Acesse seu workspace
         <Icon icon="tabler:user-up" />
       </main-button>
@@ -31,6 +31,7 @@ const toLogin = () => {
 <style scoped lang="scss">
 header {
   position: fixed;
+  z-index: 1000;
   top: 0;
   width: 100%;
   height: 70px;
@@ -62,8 +63,13 @@ header {
 
   .bg-button {
     border: 1px solid #c5c5c51c;
-    color: #fff;
     background-image: linear-gradient(45deg, #202020, #292727);
+    transition: all 0.3s ease-out;
+
+    &:hover {
+      filter: drop-shadow(0 0 0.4rem #c5c5c5);
+      cursor: pointer;
+    }
   }
 }
 </style>

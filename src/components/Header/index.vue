@@ -37,6 +37,7 @@ header {
   height: 70px;
   padding: 0 150px;
   border-bottom: 1px solid #6767671a;
+  box-shadow: 0 5px 50px #004e376e;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -67,7 +68,7 @@ header {
     transition: all 0.3s ease-out;
 
     &:hover {
-      filter: drop-shadow(0 0 0.4rem #c5c5c5);
+      filter: drop-shadow(0 0 0.4rem #028a616e);
       cursor: pointer;
     }
   }

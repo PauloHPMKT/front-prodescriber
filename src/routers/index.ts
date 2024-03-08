@@ -7,7 +7,6 @@ import {
 import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
 import NotFoundPage from "../views/NotFoundPage.vue";
-import Dashboard from "../views/workspace/dashboard.vue";
 import pageStructure from "../templates/pageStructure.vue";
 import ConnectionDown from "../views/ConnectionDown.vue";
 import genDescription from "../views/workspace/genDescription.vue";
@@ -51,7 +50,7 @@ const router = createRouter({
         {
           path: "dashboard",
           name: "dashboard",
-          component: Dashboard,
+          component: () => import("../views/workspace/Dashboard.vue"),
           props: (router) => ({ description: router.query.description }),
         },
         {

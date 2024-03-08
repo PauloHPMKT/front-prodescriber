@@ -11,8 +11,8 @@ import Dashboard from "../views/workspace/dashboard.vue";
 import pageStructure from "../templates/pageStructure.vue";
 import ConnectionDown from "../views/ConnectionDown.vue";
 import genDescription from "../views/workspace/genDescription.vue";
-import ListDescription from "../views/workspace/ListDescription.vue";
-import UserProfile from "../views/workspace/UserProfile.vue";
+// import ListDescription from "../views/workspace/ListDescription.vue";
+// import UserProfile from "../views/workspace/UserProfile.vue";
 
 const authGuard =
   () => (to: RouteLocation, from: RouteLocation, next: NavigationGuardNext) => {
@@ -30,6 +30,11 @@ const router = createRouter({
       path: "/",
       name: "home",
       component: Home,
+    },
+    {
+      path: "/register",
+      name: "register",
+      component: () => import("../views/Register.vue"),
     },
     {
       path: "/login",
@@ -54,16 +59,16 @@ const router = createRouter({
           name: "description",
           component: genDescription,
         },
-        {
-          path: "gen-list-descriptions",
-          name: "list_description",
-          component: ListDescription,
-        },
-        {
-          path: "profile/:id",
-          name: "userprofile",
-          component: UserProfile,
-        },
+        // {
+        //   path: "gen-list-descriptions",
+        //   name: "list_description",
+        //   component: ListDescription,
+        // },
+        // {
+        //   path: "profile/:id",
+        //   name: "userprofile",
+        //   component: UserProfile,
+        // },
       ],
     },
     {

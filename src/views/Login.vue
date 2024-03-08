@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { useRouter } from "vue-router";
+import { useRouter, RouterLink } from "vue-router";
 import Default from "../templates/default.vue";
-import DefaultIcon from "../components/Icons/defaultIcon.vue";
+import BackTo from "../components/Icons/BackTo.vue";
 import FormLogin from "../components/Forms/FormLogin.vue";
+import InputField from "../components/Inputs/InputField.vue";
+import GeneralButton from "../components/Button/GeneralButton.vue";
 
 import { useValidation } from "../composables/useValidation";
 import { Account } from "../types/account";
@@ -18,6 +20,10 @@ const router = useRouter();
 const { formsValidation } = useValidation();
 
 const isTextVisible = ref(false);
+const loginData = ref<Account.Login>({
+  email: "",
+  password: "",
+});
 
 const showText = () => {
   isTextVisible.value = true;
@@ -29,7 +35,8 @@ const hideText = () => {
 
 const toHomePage = () => router.push({ name: "home" });
 
-const submitLogin = async (request: Account.Login) => {
+const submitLogin = async () => {
+  const request = loginData.value;
   const isEmptyFields = formsValidation(request);
 
   if (isEmptyFields !== true) {
@@ -61,109 +68,39 @@ const submitLogin = async (request: Account.Login) => {
 </script>
 
 <template>
-  <default class="container_login">
-    <div
-      class="slug"
-      @click="toHomePage"
-      @mouseover="showText"
-      @mouseleave="hideText"
+  <div class="h-screen relative flex flex-col justify-center items-center">
+    <BackTo message="Voltar para a Home" @navigateAction="toHomePage" />
+    <form
+      @submit.prevent="submitLogin"
+      class="w-[400px] flex flex-col gap-4 justify-center items-center"
     >
-      <default-icon :name="'tabler:arrow-left'" class="icon_container" />
-      <p :class="{ hidden_text: isTextVisible }">voltar para a home</p>
-    </div>
-    <div class="banner_bg"></div>
-    <div class="login_area shadow-lg">
       <figure>
-        <img :src="logo" alt="Logo ProDescriber" />
+        <img
+          :src="logo"
+          alt="Logo ProDescriber"
+          class="filter invert w-[250px] -mx-2"
+        />
         <figcaption>
-          <h3>Área de Login</h3>
+          <h3 class="text-gray-950 font-semibold">Área de Login</h3>
         </figcaption>
+        <div class="flex items-center">
+          <p class="my-6 mr-1">Ainda não criou sua Workspace?</p>
+          <RouterLink :to="{ name: 'register' }" class="text-blue-600 underline"
+            >Registrar</RouterLink
+          >
+        </div>
       </figure>
-      <form-login @handle-login="submitLogin" />
-    </div>
-  </default>
+      <div class="flex flex-col gap-5 w-full">
+        <InputField placeholder="E-mail de Usuário" v-model="loginData.email" />
+        <InputField
+          placeholder="Sua Senha"
+          :isPassword="true"
+          v-model="loginData.password"
+        />
+        <GeneralButton class="w-full h-14"> Entrar </GeneralButton>
+      </div>
+    </form>
+  </div>
 </template>
 
-<style scoped lang="scss">
-.banner_bg {
-  width: 50%;
-  height: 70%;
-  background-image: url("../assets/img/dashed_bg.svg");
-  background-size: 100px;
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translate(-50%);
-  filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg)
-    brightness(1000%);
-  z-index: -1;
-}
-.container_login {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 71vh;
-
-  .slug {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    display: flex;
-    align-items: center;
-    border: 1px solid #c5c5c51c;
-    background-image: linear-gradient(45deg, #202020, #292727);
-    transition: all 0.3s ease-out;
-    border-radius: 20px;
-    padding: 10px;
-    color: #fff;
-    cursor: pointer;
-    overflow: hidden;
-    transition: width 0.3s ease;
-    height: 45px;
-    width: 45px;
-
-    &:hover {
-      width: 200px;
-    }
-
-    .icon_container {
-      display: flex;
-      align-items: center;
-      font-size: 1.5rem;
-      margin-right: 10px;
-    }
-
-    p {
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.3s ease;
-      position: absolute;
-      top: 20%;
-      right: -100%;
-      color: #0d0d0d;
-    }
-    .hidden_text {
-      opacity: 1;
-      visibility: visible;
-      transition: opacity 0.3s ease;
-      right: 10%;
-      color: #fff;
-    }
-  }
-  .login_area {
-    background-image: linear-gradient(45deg, #323232, #4d4b4b);
-    width: 40%;
-    padding: 50px;
-    border-radius: 6px;
-
-    img {
-      width: 250px;
-      margin-left: -10px;
-    }
-
-    figcaption {
-      margin-bottom: 30px;
-    }
-  }
-}
-</style>
+<style scoped lang="scss"></style>

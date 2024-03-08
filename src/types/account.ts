@@ -3,4 +3,11 @@ export namespace Account {
     email: string;
     password: string;
   }
+
+  export interface Create {
+    name: string;
+    nickname?: string;
+    email: string;
+    password: string;
+  }
 }

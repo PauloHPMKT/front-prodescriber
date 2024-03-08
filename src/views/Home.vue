@@ -10,6 +10,7 @@ import LoadSpinner from "../components/Loaders/LoadSpinner.vue";
 import BreadcrumbButtons from "../components/BreadcrumbButtons/index.vue";
 import Default from "../templates/default.vue";
 import Description from "../components/Description/index.vue";
+import About from "../components/site/About.vue";
 //externals
 import { Breadcrumb } from "../types/interfaces";
 import { useValidation } from "../composables/useValidation";
@@ -76,6 +77,14 @@ const triggerActions = (actions: string) => {
   }
 };
 
+const registration = () => {
+  if (localStorage.getItem("access_token")) {
+    router.push({ name: "dashboard" });
+    return;
+  }
+  return router.push({ name: "register" });
+};
+
 const saveDescription = (token: string | null) => {
   !!token ? router.push({ name: "dashboard" }) : router.push({ name: "login" });
 };
@@ -134,14 +143,14 @@ onMounted(() => {
 
 <template>
   <div class="home_view">
-    <main-header />
+    <MainHeader />
     <div class="m-auto w-[1500px]">
       <div class="banner_bg"></div>
       <main>
         <default>
           <div class="content">
             <h1 class="text-2xl">
-              <span class="text-gray-300 font-medium">ProDescriber</span>, seu
+              <span class="text-slate-300 font-medium">ProDescriber</span>, seu
               parceiro confiável para criação de descrições de produtos!
             </h1>
             <p>
@@ -149,14 +158,20 @@ onMounted(() => {
               seu produto e impulsione suas vendas. Experimente já o
               ProDescriber!
             </p>
-            <div id="demo" v-if="showDemo">
+            <div class="mt-8">
+              <main-button @click="registration" class="bg-button text-white">
+                Comece agora Gratuitamente
+                <Icon :icon="'tabler:wand'" />
+              </main-button>
+            </div>
+            <!-- <div id="demo" v-if="showDemo">
               <transition name="slide-fade">
                 <main-button
                   v-if="show === false"
                   @click="show = !show"
                   class="bg-button text-white"
                 >
-                  Comece agora
+                  Comece agora Gratuitamente
                   <Icon :icon="'tabler:wand'" />
                 </main-button>
                 <form-description v-else @submit="submitDescription" />
@@ -176,11 +191,11 @@ onMounted(() => {
                   @actions="triggerActions"
                 />
               </description>
-            </div>
+            </div> -->
           </div>
         </default>
         <default>
-          <h1>Pagina de Informações</h1>
+          <About />
         </default>
       </main>
     </div>
@@ -189,6 +204,7 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .home_view {
+  background-image: linear-gradient(90deg, #121212, #000, #121212);
   padding-top: 30px;
   position: absolute;
   width: 100%;
@@ -199,17 +215,16 @@ onMounted(() => {
     background-image: url("../assets/img/dashed_bg.svg");
     background-size: 100px;
     position: absolute;
-    top: -10%;
+    top: -15%;
     left: 49.7%;
     transform: translate(-50%);
-    filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(125deg)
+    filter: invert(100%) sepia(90%) saturate(0%) hue-rotate(125deg)
       brightness(1000%);
-    z-index: -1;
   }
   .content {
     width: 80%;
     margin: 0 auto;
-    padding: 30px 0;
+    padding: 40px 0;
     text-align: center;
 
     h1 {
@@ -227,43 +242,38 @@ onMounted(() => {
       padding: 0 80px 40px;
     }
 
-    #demo {
-      position: relative;
-      //margin: 8% 0 0;
+    .bg-button {
+      position: absolute;
+      transform: translate(-50%);
+      padding-top: 7px;
+      padding-bottom: 7px;
+      border: 1px solid #c5c5c51c;
+      background-image: linear-gradient(45deg, #202020, #292727);
+      transition: all 0.3s ease-out;
 
-      .bg-button {
-        position: absolute;
-        transform: translate(-50%);
-        padding-top: 7px;
-        padding-bottom: 7px;
-        border: 1px solid #c5c5c51c;
-        background-image: linear-gradient(45deg, #202020, #292727);
-        transition: all 0.3s ease-out;
-
-        &:hover {
-          filter: drop-shadow(0 0 0.4rem #c5c5c5);
-          cursor: pointer;
-        }
-
-        svg {
-          margin-left: 10px;
-          font-size: 1.2rem;
-        }
+      &:hover {
+        filter: drop-shadow(0 0 0.4rem #028a616e);
+        cursor: pointer;
       }
 
-      .slide-fade-enter-active {
-        transition: all 0.4s ease-out;
+      svg {
+        margin-left: 10px;
+        font-size: 1.2rem;
       }
+    }
 
-      .slide-fade-leave-active {
-        transition: all 0.5s cubic-bezier(1, 0.5, 0.8, 1);
-      }
+    .slide-fade-enter-active {
+      transition: all 0.4s ease-out;
+    }
 
-      .slide-fade-enter-from,
-      .slide-fade-leave-to {
-        transform: translateX(20px);
-        opacity: 0;
-      }
+    .slide-fade-leave-active {
+      transition: all 0.5s cubic-bezier(1, 0.5, 0.8, 1);
+    }
+
+    .slide-fade-enter-from,
+    .slide-fade-leave-to {
+      transform: translateX(20px);
+      opacity: 0;
     }
 
     .loader_container {

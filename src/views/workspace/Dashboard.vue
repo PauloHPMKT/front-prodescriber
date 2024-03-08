@@ -98,8 +98,8 @@ onMounted(() => {
               Acessada recentemente:
             </p>
           </div>
-          <div class="ml-5 cursor-pointer flex items-center bg-white p-4 rounded-[18px] border-2 border-slate-200 shadow-sm">
-            <div class="bg-black h-8 w-8 flex items-center justify-center rounded-full mr-3">
+          <div class="ml-5 cursor-pointer flex items-center bg-white p-2 rounded-[18px] border-2 border-slate-200 shadow-sm">
+            <div class="bg-black p-2 flex items-center justify-center rounded-full mr-2">
               <Icon icon="tdesign:share" class="text-white"/>
             </div>
             <span class="font-semibold" @click="redirectTo">
@@ -115,7 +115,7 @@ onMounted(() => {
     <div class="mt-4">
       <p>IA Workflows recomendados para o seu plano</p>
       <div class="flex items-center gap-3 flex-wrap mb-8 mt-5">
-        <tool-services
+        <ToolServices
           v-for="service in navigationServices"
           :key="service.id"
           v-bind="service"

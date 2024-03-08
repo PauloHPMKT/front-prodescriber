@@ -7,8 +7,8 @@ export const navigationServices: NavigatePathsProps[] = [
     icon: "file-description",
     description: "Gerador de Descrições",
     content: `
-        O gerador de descrições é uma ferramenta que permite a criação de
-        descrições de produtos de forma rápida e eficiente.
+        O gerador de descrições permite a criação de
+        descrições com rapidez e eficiecia.
     `,
   },
   {
@@ -27,8 +27,8 @@ export const navigationServices: NavigatePathsProps[] = [
     icon: "language",
     description: "Tradutor",
     content: `
-        O gerador de descrições é uma ferramenta que permite a criação de
-        descrições de produtos de forma rápida e eficiente.
+        O Workflow de tradução da IA permite a transcrição
+        e tradução de textos de forma totalmente confiável.
     `,
   },
   {
@@ -37,8 +37,8 @@ export const navigationServices: NavigatePathsProps[] = [
     icon: "text-grammar",
     description: "Revisor de Conteúdo",
     content: `
-        O gerador de descrições é uma ferramenta que permite a criação de
-        descrições de produtos de forma rápida e eficiente.
+        O revisor de conteúdo garante maior precisão e consistência
+        para criar documentos de alta qualidade.
     `,
   },
 ];

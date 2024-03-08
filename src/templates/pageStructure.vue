@@ -29,6 +29,10 @@ const showCardProfile = () => {
   isCardVisible.value = !isCardVisible.value;
 };
 
+const redirectToThemeConfig = () => {
+  alert("Aqui vai para as configurações de tema");
+};
+
 const redirectToProfile = () => {
   alert("Aqui vai para o perfil do usuario");
 };
@@ -57,12 +61,25 @@ onMounted(() => {
         <div @click="showCardProfile" class="user_info bg-red-500">
           <Icon icon="teenyicons:user-circle-solid" />
         </div>
-        <div class="card_user" v-if="isCardVisible">
+        <div
+          v-if="isCardVisible"
+          class="p-4 absolute top-12 right-16 z-10 bg-secondary-100 rounded-md shadow-md"
+        >
           <div class="pb-[15px] border-b-2">
             <p class="text-zinc-950">
               {{ truncateText(String(authStore.$state.currentUser.email)) }}
             </p>
+            <div>
+              <!-- Essa informação deverá vim de alguma camada de persistencia -->
+              <p class="uppercase text-[14px] mt-2 bg-gray-200 rounded-lg text-center">Plano free</p>
+            </div>
           </div>
+          <p
+            @click="redirectToThemeConfig"
+            class="py-2 hover:bg-slate-100 cursor-pointer transition rounded-md text-zinc-950"
+          >
+            Preferencias
+          </p>
           <p
             @click="redirectToProfile"
             class="py-2 hover:bg-slate-100 cursor-pointer transition rounded-md text-zinc-950"
@@ -88,14 +105,12 @@ onMounted(() => {
 <style scoped lang="scss">
 .wrapper {
   display: flex;
-  max-width: 3000px;
-  margin: 0 auto;
   min-height: 100vh;
 
   .container {
     color: #121212;
     max-width: 100%;
-    padding-left: 20%;
+    padding-left: 17%;
 
     .user_header {
       display: flex;
@@ -145,30 +160,11 @@ onMounted(() => {
           border-radius: 6px;
         } */
       }
-
-      .card_user {
-        position: absolute;
-        right: 50px;
-        top: 65px;
-        z-index: 3000;
-        box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
-        background-color: #ffffff;
-        border-radius: 6px;
-        padding: 15px;
-      }
     }
 
     main {
       padding: 0 40px;
       //height: 88vh;
-    }
-
-    footer {
-      height: 8vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: #f9f8f9;
     }
   }
 }

@@ -1,6 +1,6 @@
 <script setup>
 import { reactive } from "vue";
-import { useRouter } from "vue-router";
+import { useRouter, RouterLink } from "vue-router";
 import InputField from "../components/Inputs/InputField.vue";
 import GeneralButton from "../components/Button/GeneralButton.vue";
 import BackTo from "../components/Icons/BackTo.vue";
@@ -35,9 +35,12 @@ const alerta = () => {
     <h2 class="font-bold text-[1.56rem] text-gray-950 mb-6">
       Crie seu Workspace Gratuitamente
     </h2>
-    <p class="mb-6">
-      Já possui uma conta? <span class="underline">Faça Login</span>
-    </p>
+    <div class="mb-6 flex items-center">
+      <p class="mr-1">Já possui conta?</p>
+      <RouterLink :to="{ name: 'login' }" class="text-blue-600 underline">
+        Fazer login
+      </RouterLink>
+    </div>
     <form
       @submit.prevent="alerta"
       class="w-[400px] flex flex-col gap-4 justify-center items-center"

@@ -20,7 +20,7 @@ const isRouteActive = (route: string) => {
       >
         <router-link :to="{ path: `${link.router}` }" exact>
           <Icon :icon="`carbon:${link.icon}`" />
-          <span>{{ link.description }}</span>
+          <span class="text-[15px]">{{ link.description }}</span>
         </router-link>
       </li>
     </ul>

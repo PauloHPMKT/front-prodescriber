@@ -16,7 +16,7 @@ export const navigationServices: NavigatePathsProps[] = [
     id: 1,
     router: "/app/prompts",
     icon: "pencil-minus",
-    description: "GPT gerador de prompts",
+    description: "Prompter generator",
     content: `
         Crie prompts utilizando o poder do GPT-3 para personalizar a
         geração de descrições de seus produtos.

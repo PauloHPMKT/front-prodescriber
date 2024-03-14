@@ -9,8 +9,6 @@ import Login from "../views/Login.vue";
 import NotFoundPage from "../views/NotFoundPage.vue";
 import pageStructure from "../templates/pageStructure.vue";
 import ConnectionDown from "../views/ConnectionDown.vue";
-import genDescription from "../views/workspace/genDescription.vue";
-// import ListDescription from "../views/workspace/ListDescription.vue";
 // import UserProfile from "../views/workspace/UserProfile.vue";
 
 const authGuard =
@@ -56,13 +54,35 @@ const router = createRouter({
         {
           path: "gen-descriptions",
           name: "description",
-          component: genDescription,
+          component: () => import("../views/workspace/GenDescription.vue"),
         },
-        // {
-        //   path: "gen-list-descriptions",
-        //   name: "list_description",
-        //   component: ListDescription,
-        // },
+        {
+          path: "gen-list-descriptions",
+          name: "descriptions",
+          component: () => import("../views/workspace/Descriptions.vue"),
+        },
+        {
+          path: "prompts",
+          name: "prompts",
+          component: () => import("../views/workspace/PromptGenerator.vue"),
+        },
+        {
+          path: "translater",
+          name: "translater",
+          component: () => import("../views/workspace/Translater/Translater.vue"),
+          children: [
+            {
+              path: "ia",
+              name: "generative-ia",
+              component: () => import("../views/workspace/Translater/IATranslater.vue"),
+            },
+            {
+              path: "text",
+              name: "manual-translater",
+              component: () => import("../views/workspace/Translater/ManualTranslater.vue"),
+            }
+          ]
+        }
         // {
         //   path: "profile/:id",
         //   name: "userprofile",

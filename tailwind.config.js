@@ -11,6 +11,7 @@ module.exports = {
         },
         "dark-1000": "#121212",
         "gray-1000": "#0C090A",
+        aliceblue: "#f0f8ff",
       },
       borderColor: {
         "gray-1050": "#1B1819",

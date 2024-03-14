@@ -1,3 +1,4 @@
+import { useRoute } from "vue-router";
 import { NavigatePathsProps } from "../types/interfaces";
 
 export const navigationServices: NavigatePathsProps[] = [
@@ -42,3 +43,15 @@ export const navigationServices: NavigatePathsProps[] = [
     `,
   },
 ];
+
+export const useRouterOptions = () => {
+  const router = useRoute();
+
+  function matchedRouter(route: string): boolean {
+    return router.matched.some((record) => record.path === route);
+  };
+
+  return {
+    matchedRouter,
+  }
+}

@@ -10,6 +10,17 @@ export namespace Breadcrumb {
     DISLIKE = "dislike",
     GENERATE = "generate",
   }
+
+  export interface Icons {
+    icon: string;
+    action: string;
+  }
+
+  export enum IconsActions {
+    LIKE = "like",
+    DISLIKE = "dislike",
+    COPY = "copy",
+  }
 }
 
 export interface IconParams {
@@ -48,4 +59,10 @@ export interface NavigatePathsProps {
   icon: string;
   description: string;
   content: string;
+}
+
+export interface useServiceOptions {
+  id: number;
+  icon: string;
+  description: string;
 }

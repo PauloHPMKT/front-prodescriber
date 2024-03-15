@@ -4,7 +4,6 @@ import {
   createRouter,
   createWebHistory,
 } from "vue-router";
-import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
 import NotFoundPage from "../views/NotFoundPage.vue";
 import pageStructure from "../templates/pageStructure.vue";
@@ -26,7 +25,7 @@ const router = createRouter({
     {
       path: "/",
       name: "home",
-      component: Home,
+      component: () => import("../views/Home.vue"),
     },
     {
       path: "/register",

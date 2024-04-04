@@ -29,7 +29,7 @@ const submitLogin = async () => {
   const isEmptyFields = formsValidation(request);
 
   if (isEmptyFields !== true) {
-    showToast(String(isEmptyFields));
+    showToast("error", String(isEmptyFields));
     return;
   }
 
@@ -51,7 +51,7 @@ const submitLogin = async () => {
         : router.push({ name: "dashboard" });
     }
   } catch (error) {
-    showToast("Erro ao realizar o login!");
+    showToast("error", "Erro ao realizar o login!");
   }
 };
 </script>

@@ -1,37 +1,26 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useRouter, RouterLink } from "vue-router";
-import Default from "../templates/default.vue";
 import BackTo from "../components/Icons/BackTo.vue";
-import FormLogin from "../components/Forms/FormLogin.vue";
 import InputField from "../components/Inputs/InputField.vue";
 import GeneralButton from "../components/Button/GeneralButton.vue";
 
 import { useValidation } from "../composables/useValidation";
+import { useToast } from "../composables/useToast";
 import { Account } from "../types/account";
 import logo from "../assets/img/logo_prodescriber.png";
 
 import { useAuthStore } from "../store/index";
-import { useToastStore } from "../store/toast";
 
-const authStore = useAuthStore();
-const toastStore = useToastStore();
 const router = useRouter();
+const authStore = useAuthStore();
 const { formsValidation } = useValidation();
+const { showToast } = useToast();
 
-const isTextVisible = ref(false);
 const loginData = ref<Account.Login>({
   email: "",
   password: "",
 });
-
-const showText = () => {
-  isTextVisible.value = true;
-};
-
-const hideText = () => {
-  isTextVisible.value = false;
-};
 
 const toHomePage = () => router.push({ name: "home" });
 
@@ -40,7 +29,7 @@ const submitLogin = async () => {
   const isEmptyFields = formsValidation(request);
 
   if (isEmptyFields !== true) {
-    toastStore.execute(String(isEmptyFields), false);
+    showToast(String(isEmptyFields));
     return;
   }
 
@@ -62,7 +51,7 @@ const submitLogin = async () => {
         : router.push({ name: "dashboard" });
     }
   } catch (error) {
-    toastStore.execute("Erro ao realizar o login!", false);
+    showToast("Erro ao realizar o login!");
   }
 };
 </script>

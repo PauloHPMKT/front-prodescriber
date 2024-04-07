@@ -4,13 +4,12 @@ import { useRouter, RouterLink } from "vue-router";
 import BackTo from "../components/Icons/BackTo.vue";
 import InputField from "../components/Inputs/InputField.vue";
 import GeneralButton from "../components/Button/GeneralButton.vue";
+import PageTransition from "../components/PageTransition/index.vue";
 
 import { useValidation } from "../composables/useValidation";
-import { useHelpers } from "../composables/useHelpers";
 import { useToast } from "../composables/useToast";
 import { Account } from "../types/account";
 import logo from "../assets/img/logo_prodescriber.png";
-import loadingBot from "../assets/lottie_animations/loadingBot.json";
 
 import { useAuthStore } from "../store/index";
 
@@ -18,7 +17,7 @@ const router = useRouter();
 const authStore = useAuthStore();
 const { formsValidation } = useValidation();
 const { showToast } = useToast();
-const { truncateText } = useHelpers();
+
 
 const loginData = ref<Account.Login>({
   email: "",
@@ -46,7 +45,7 @@ const submitLogin = async () => {
       const user = data.user;
       authStore.getCurrentUser(user);
       setTimeout(() => {
-        isLoading.value = false;     
+        isLoading.value = false;
         const access_token = data.access_token;
         localStorage.setItem("access_token", access_token);
   
@@ -62,21 +61,7 @@ const submitLogin = async () => {
 
 <template>
   <transition name="fade">
-
-    <div v-if="isLoading" class="h-screen flex justify-center items-center"> 
-      <div>
-        <Vue3Lottie              
-          :animationData="loadingBot"
-          :height="150"
-          :width="150"
-          :loop="true"
-          :speed="3"
-        />
-        <span class="text-gray-950 font-semibold text-[20px]">
-          {{ `Olá ${truncateText(String(authStore.$state.currentUser.username))}, que bom te ver por aqui!` }}
-        </span>
-      </div>
-    </div>
+    <PageTransition v-if="isLoading" :username="authStore.currentUser.username!" ref="loader" />
     <div v-else class="h-screen relative flex flex-col justify-center items-center">
       <BackTo message="Voltar para a Home" @navigateAction="toHomePage" />
       <form

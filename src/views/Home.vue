@@ -9,6 +9,7 @@ import PageTransition from "../components/PageTransition/index.vue";
 import { useOnMounted } from "../composables/useOnMounted";
 import { useAuthStore } from "../store";
 import { useOpenAIStore } from "../store/openai";
+import SiteFooter from "../components/site/Footer.vue";
 const authStore = useAuthStore();
 const { cleanStore } = useOpenAIStore();
 const { removeStoreOnLoad } = useOnMounted();
@@ -121,10 +122,10 @@ onMounted(() => {
       v-if="authStore.$state.pageTransition" 
       :username="isStoragedUser!" 
     />
-    <div v-else class="home_view">
+    <div v-else class="pt-8 absolute w-full">
       <MainHeader />
       <Container>
-        <div class="banner_bg"></div>
+        <div class="banner_bg w-1/2 h-4/5"></div>
         <main>
           <default>
             <Hero />
@@ -134,6 +135,7 @@ onMounted(() => {
           </default>
         </main>
       </Container>
+      <SiteFooter />
     </div>
   </transition> 
 </template>
@@ -148,21 +150,14 @@ onMounted(() => {
 .fade-leave-to {
   opacity: 0;
 }
-.home_view {
-  padding-top: 30px;
-  position: absolute;
-  width: 100%;
 
-  .banner_bg {
-    width: 50%;
-    height: 80%;
-    background-image: url("../assets/img/dashed_bg.svg");
-    background-size: 100px;
-    position: absolute;
-    top: -50%;
-    left: 20%;
-    z-index: 10;
-    transform: translate(-50%);
-  }
+.banner_bg {
+  background-image: url("../assets/img/dashed_bg.svg");
+  background-size: 100px;
+  position: absolute;
+  top: -50%;
+  left: 20%;
+  z-index: 10;
+  transform: translate(-50%);
 }
 </style>

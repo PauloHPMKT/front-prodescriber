@@ -2,75 +2,43 @@
 import { Icon } from "@iconify/vue";
 import { useRouter } from "vue-router";
 import MainButton from "../Button/index.vue";
-import logo from "../../assets/img/logo_prodescriber.png";
+
+import { useAuthStore } from "../../store";
+import logo from "../../assets/img/ProDescriber-dark.png";
+import Container from "../../templates/container.vue";
 
 const router = useRouter();
+const authStore = useAuthStore();
 
 const toLogin = () => {
-  const userStoraged = localStorage.getItem("access_token");
-  !!userStoraged
-    ? router.push({ name: "dashboard" })
-    : router.push({ name: "login" });
+  const TIME_TO_REDIRECT = 3000;
+  authStore.changeLoaderPage(true)
+  setTimeout(() => {
+    const userStoraged = localStorage.getItem("access_token");  
+    if (!!userStoraged) {
+      router.push({ name: "dashboard" });
+      authStore.changeLoaderPage(false)
+      return;
+    }
+    router.push({ name: "login" });
+    authStore.changeLoaderPage(false)
+  }, TIME_TO_REDIRECT);
 };
 </script>
 
 <template>
-  <header>
-    <div class="logo_container">
-      <img :src="logo" alt="Logo ProDescriber" />
-    </div>
-    <div>
-      <main-button class="bg-button text-white" @action="toLogin">
-        Acesse seu workspace
-        <Icon icon="tabler:user-up" />
+  <header class="fixed z-10 top-0 w-full h-24 border-b-2 border-b-gray-1050a bg-dark-1000a backdrop-blur">
+    <Container class="flex justify-between items-center h-full">
+      <div class="w-56 py-2 flex justify-center items-center">
+        <img :src="logo" alt="Logo ProDescriber" class="w-full"/>
+      </div>
+      <main-button 
+        class="py-2 border-2 border-gray-1050 bg-gray-1000 text-white" 
+        @action="toLogin"
+      >
+        Acessar workspace
+        <Icon icon="tabler:user-up" class="ml-2" />
       </main-button>
-    </div>
+    </Container>
   </header>
 </template>
-
-<style scoped lang="scss">
-header {
-  position: fixed;
-  z-index: 1000;
-  top: 0;
-  width: 100%;
-  height: 70px;
-  padding: 0 150px;
-  border-bottom: 1px solid #6767671a;
-  box-shadow: 0 5px 50px #004e376e;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(8px);
-
-  .logo_container {
-    width: 180px;
-    padding: 30px 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    img {
-      width: 100%;
-      transition: all 0.3s ease-out;
-
-      &:hover {
-        cursor: pointer;
-        filter: drop-shadow(0 0 0.75rem #c5c5c57c);
-      }
-    }
-  }
-
-  .bg-button {
-    border: 1px solid #c5c5c51c;
-    background-image: linear-gradient(45deg, #202020, #292727);
-    transition: all 0.3s ease-out;
-
-    &:hover {
-      filter: drop-shadow(0 0 0.4rem #028a616e);
-      cursor: pointer;
-    }
-  }
-}
-</style>

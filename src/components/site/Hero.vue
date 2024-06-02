@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { Icon } from "@iconify/vue"; 
 import { useRouter } from 'vue-router';
-import MainButton from "@/components/Button/index.vue";
+import MainButton from "../Button/index.vue";
+import proDescriberBanner from '../../assets/img/ProDescriber-banner.png';
+import gemini from '../../assets/img/gemini.png';
 
 const router = useRouter();
 
@@ -15,95 +17,27 @@ const registration = () => {
 </script>
 
 <template>
-  <div class="w-[80%] m-auto text-center py-10">
-    <h1 class="text-4xl font-semibold leading-tight mb-9">
-      <span class="text-slate-300 font-medium">ProDescriber</span>, seu
-      parceiro confiável para criação de descrições de produtos!
-    </h1>
-    <p class="leading-normal text-lg px-20 pb-10">
-      Crei descrições de alta qualidade e totalmente SEO-friendly para
-      seu produto e impulsione suas vendas. Experimente já o
-      ProDescriber!
-    </p>
-    <div class="mt-8">
-      <MainButton @click="registration" class="bg-button text-white">
+  <div class="flex text-black my-36">
+    <div class="w-1/2 pr-24">
+      <h1 class="text-4xl font-bold leading-tight mb-8">
+        Seu parceiro confiável para gestão de recursos no seu negócio!
+      </h1>
+      <p class="leading-normal text-lg pb-8">
+        Crie descrições de alta qualidade e totalmente SEO-friendly para
+        seu produto e impulsione suas vendas. Experimente já o
+        ProDescriber!
+      </p>
+      <MainButton @click="registration" class="py-2 border-2 border-gray-1050 bg-gray-1000 text-white">
         Comece agora Gratuitamente
-        <Icon :icon="'tabler:wand'" />
+        <Icon :icon="'tabler:wand'" class="ml-2" />
       </MainButton>
-    </div>
-    <!-- <div id="demo" v-if="showDemo">
-      <transition name="slide-fade">
-        <main-button
-          v-if="show === false"
-          @click="show = !show"
-          class="bg-button text-white"
-        >
-          Comece agora Gratuitamente
-          <Icon :icon="'tabler:wand'" />
-        </main-button>
-        <form-description v-else @submit="submitDescription" />
-      </transition>
-    </div>
-    <div v-else>
-      <div v-if="loading" style="text-align: center">
-        <div class="loader_container">
-          <load-spinner
-            :loader_description="'Aguarde enquanto geramos a sua descrição perfeita!'"
-          />
-        </div>
+      <div class="pt-8 flex items-center">
+        <p>Utilizamos todo o poder do</p>
+        <img :src="gemini" alt="Gemini logo" class="w-28 ml-2" />
       </div>
-      <description v-else>
-        <breadcrumb-buttons
-          :buttons="breadcrumbButtons"
-          @actions="triggerActions"
-        />
-      </description>
-    </div> -->
+    </div>
+    <div class="w-1/2">
+      <img :src="proDescriberBanner" alt="introdução ProDescriber" class="w-full" />
+    </div>
   </div>
 </template>
-
-<style scoped lang="scss">
-.bg-button {
-  position: absolute;
-  transform: translate(-50%);
-  z-index: 2000;
-  padding-top: 7px;
-  padding-bottom: 7px;
-  border: 1px solid #c5c5c51c;
-  background-image: linear-gradient(45deg, #202020, #292727);
-  transition: all 0.3s ease-out;
-
-  &:hover {
-    filter: drop-shadow(0 0 0.4rem #028a616e);
-    cursor: pointer;
-  }
-
-  svg {
-    margin-left: 10px;
-    font-size: 1.2rem;
-  }
-}
-
-/* .content {
-  .slide-fade-enter-active {
-    transition: all 0.4s ease-out;
-  }
-
-  .slide-fade-leave-active {
-    transition: all 0.5s cubic-bezier(1, 0.5, 0.8, 1);
-  }
-
-  .slide-fade-enter-from,
-  .slide-fade-leave-to {
-    transform: translateX(20px);
-    opacity: 0;
-  }
-
-  .loader_container {
-    margin: 30px auto;
-    padding: 30px;
-    width: 600px;
-    border-radius: 8px;
-  }
-} */
-</style>

@@ -1,5 +1,12 @@
 <script setup lang="ts">
+import { twMerge } from "tailwind-merge";
+
+interface ButtonProps {
+  class?: string;
+}
+
 const emit = defineEmits(["action"]);
+const props = defineProps<ButtonProps>();
 
 const action = () => {
   emit("action");
@@ -7,21 +14,13 @@ const action = () => {
 </script>
 
 <template>
-  <button @click="action">
+  <button 
+    @click="action" 
+    :class="twMerge(
+      `py-1 px-2 border-transparent text-[1rem] cursor-pointer inline-flex justify-center items-center rounded-md`, 
+      props.class
+    )"  
+  >
     <slot></slot>
   </button>
 </template>
-
-<style scoped lang="scss">
-button {
-  padding: 5px 10px;
-  border-radius: 20px;
-  border: 1px solid transparent;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: 0.2s ease-in-out;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-}
-</style>

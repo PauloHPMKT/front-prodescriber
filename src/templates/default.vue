@@ -8,8 +8,7 @@
 
 <style scoped lang="scss">
 .base_structure {
-  min-height: 40vh;
+  min-height: 60vh;
   margin: 100px 0;
-  padding: 0 10%;
 }
 </style>

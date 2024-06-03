@@ -1,23 +1,15 @@
 <script setup lang="ts">
 import { Icon } from "@iconify/vue"; 
-import { useRouter } from 'vue-router';
 import MainButton from "../Button/index.vue";
+import { useNavigation } from "../../composables/useNavigarion";
 import proDescriberBanner from '../../assets/img/ProDescriber-banner.png';
 import gemini from '../../assets/img/gemini.png';
 
-const router = useRouter();
-
-const registration = () => {
-  if (localStorage.getItem("access_token")) {
-    router.push({ name: "dashboard" });
-    return;
-  }
-  return router.push({ name: "register" });
-};
+const { registration } = useNavigation();
 </script>
 
 <template>
-  <div class="flex text-black my-36">
+  <div class="flex text-black mt-40">
     <div class="w-1/2 pr-24">
       <h1 class="text-4xl font-bold leading-tight mb-8">
         Seu parceiro confiável para gestão de recursos no seu negócio!
@@ -33,7 +25,7 @@ const registration = () => {
       </MainButton>
       <div class="pt-8 flex items-center">
         <p>Utilizamos todo o poder do</p>
-        <img :src="gemini" alt="Gemini logo" class="w-28 ml-2" />
+        <img :src="gemini" alt="Gemini logo" class="w-24 ml-2" />
       </div>
     </div>
     <div class="w-1/2">

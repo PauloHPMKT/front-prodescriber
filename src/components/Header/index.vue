@@ -32,13 +32,13 @@ const toLogin = () => {
       <div class="w-56 py-2 flex justify-center items-center">
         <img :src="logo" alt="Logo ProDescriber" class="w-full"/>
       </div>
-      <main-button 
+      <MainButton 
         class="py-2 border-2 border-gray-1050 bg-gray-1000 text-white" 
-        @action="toLogin"
+        @click="toLogin"
       >
         Acessar workspace
         <Icon icon="tabler:user-up" class="ml-2" />
-      </main-button>
+      </MainButton>
     </Container>
   </header>
 </template>

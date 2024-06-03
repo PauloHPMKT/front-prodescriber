@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import loadingBot from "../../assets/lottie_animations/loadingBot.json";
 import { useHelpers } from "../../composables/useHelpers";
+import loadingBot from "../../assets/lottie_animations/loadingBot.json";
 
 const { truncateText } = useHelpers();
 
 interface LoadingProps {
   username: string;
 }
+
 const props = defineProps<LoadingProps>();
 
 const loadingTitle = computed(() => (
